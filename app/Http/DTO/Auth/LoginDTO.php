@@ -2,22 +2,11 @@
 
 namespace App\Http\DTO\Auth;
 
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Foundation\Http\FormRequest;
-use Spatie\DataTransferObject\DataTransferObject;
+use App\Http\DTO\DTO;
 
-class LoginDTO extends DataTransferObject
+class LoginDTO extends DTO
 {
     public string $email;
 
     public string $password;
-
-    public static function createFromRequest(FormRequest $request): static
-    {
-        /** @var LoginRequest $request */
-        return new static([
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-    }
 }
