@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Upload;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Upload\UploadRequest;
-use App\Http\Services\Upload\UploadExcelService;
+use App\Http\Services\Rows\RowService;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * Class ExcelController
  * @package App\Http\Controllers\Upload
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
  */
 class ExcelController extends Controller
 {
-    public function __construct(private UploadExcelService $service)
+    public function __construct(private RowService $service)
     {
     }
 

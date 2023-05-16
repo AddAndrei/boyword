@@ -3,6 +3,7 @@
 namespace App\Models\Upload;
 
 
+use App\Http\Extensions\SortingTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Row extends Model
 {
+    use SortingTrait;
+
     public $timestamps = false;
 
     protected $table = 'rows';

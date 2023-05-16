@@ -1,26 +1,24 @@
 <?php
 
-namespace App\Http\Responses\Auth;
+namespace App\Http\Responses\Rows;
+
 use App\Http\Responses\Response;
-use App\Models\User;
+use App\Models\Upload\Row;
 use Illuminate\Http\Request;
 
-
-class UserResponse extends Response
+class RowResponse extends Response
 {
-
     /**
      * @param Request $request
      * @return array<string, mixed>
      */
     public function toArray($request): array
     {
-        /** @var User $this */
+        /** @var Row $this */
         return [
             'id' => $this->getKey(),
             'name' => $this->name,
-            'email' => $this->email,
-            'token' => $this->token,
+            'date' => $this->date ? $this->date->toIso8601String() : null,
         ];
     }
 }
