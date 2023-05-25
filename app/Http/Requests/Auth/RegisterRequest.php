@@ -20,6 +20,7 @@ class RegisterRequest extends FormRequest
             [
                 'email',
                 'password',
+                'name',
                 'password_confirmation',
             ]
         );
@@ -28,6 +29,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'string|required',
             'email' => 'string|required|unique:users,email',
             'password' => 'string|required|confirmed',
             'password_confirmation' => 'string|required',

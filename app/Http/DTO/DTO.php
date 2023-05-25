@@ -7,7 +7,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class DTO extends DataTransferObject
 {
-    public static function createFromRequest(Request $request): self
+    public static function createFromRequest(Request $request): static
     {
         $dto = new static(
             $request->all()
