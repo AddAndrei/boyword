@@ -18,6 +18,7 @@ class UserService extends Service
         /** @var  RegisterDTO $dto */
         $user = new User();
         $user->email = $dto->email;
+        $user->name = $dto->name;
         $user->password = bcrypt($dto->password);
         $user->save();
         $user->token = $user->createToken('appToken')->plainTextToken;

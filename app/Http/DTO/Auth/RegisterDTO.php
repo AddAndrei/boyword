@@ -12,8 +12,8 @@ use App\Http\DTO\DTO;
  */
 class RegisterDTO extends DTO
 {
+    public string $name;
     public string $email;
-
     public string $password;
     public string $password_confirmation;
 }
