@@ -27,8 +27,6 @@ class MediatrController extends Controller
 
     public function show()
     {
-        /*$worker = new WorkerInfoBaseMediatr(new Developer('developer middle'), new InfoBase());
-        $worker->getWorker();*/
         return "ok";
     }
 
