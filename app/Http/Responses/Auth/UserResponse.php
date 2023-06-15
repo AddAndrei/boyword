@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Responses\Auth;
+use App\Http\Responses\Hero\HeroResponse;
 use App\Http\Responses\Response;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,9 @@ class UserResponse extends Response
             'name' => $this->name,
             'email' => $this->email,
             'token' => $this->token,
+            'heroes' => $this->relationLoaded('heroes')
+                ? HeroResponse::collection($this->heroes)
+                : null,
         ];
     }
 }

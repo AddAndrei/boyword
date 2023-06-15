@@ -2,16 +2,14 @@
 
 namespace App\Http\Services\Auth;
 
-
+use App\Http\DTO\Auth\LoginDTO;
 use App\Http\DTO\Auth\RegisterDTO;
-use App\Http\Services\Service;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Spatie\DataTransferObject\DataTransferObject;
 
-class UserService extends Service
+class UserService
 {
     public function store(DataTransferObject $dto): User
     {
@@ -25,6 +23,11 @@ class UserService extends Service
         return $user;
     }
 
+    /**
+     * @param LoginDTO $dto
+     * @return User|Exception
+     * @throws Exception
+     */
     public function login(DataTransferObject $dto): User|Exception
     {
         /** @var User $user */

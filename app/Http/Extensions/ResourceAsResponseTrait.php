@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Extensions;
-
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 trait ResourceAsResponseTrait
 {
     /**
@@ -28,6 +28,12 @@ trait ResourceAsResponseTrait
     public function setStatusCode(int $statusCode): self
     {
         $this->statusCode = $statusCode;
+        return $this;
+    }
+
+    public function created(): self
+    {
+        $this->statusCode = SymfonyResponse::HTTP_CREATED;
         return $this;
     }
 }

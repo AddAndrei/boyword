@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Hero\HeroController;
 use App\Http\Controllers\Patterns\MediatrController;
 use App\Http\Controllers\Rows\RowsController;
 use App\Http\Controllers\Upload\ExcelController;
@@ -20,10 +22,16 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
+
+    Route::get('/user', [UserController::class, 'show']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/excel/upload', [ExcelController::class, 'upload']);
     Route::get('/rows', [RowsController::class, 'show']);
 
     Route::get('/mediatr', [MediatrController::class, 'show']);
     Route::post('/mediatr', [MediatrController::class, 'store']);
+
+    Route::resource('/hero', HeroController::class);
+
 });
