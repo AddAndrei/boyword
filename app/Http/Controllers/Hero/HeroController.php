@@ -28,7 +28,6 @@ class HeroController extends Controller
     #[Route("/api/hero", methods:["POST"])]
     public function store(HeroCreateRequest $request): HeroResponse|Application|ResponseFactory|Response
     {
-        try {
             $entity = $this->entityMediatr->store(HeroCreateDTO::createFromRequest($request), function (Hero $model) {
                 /** @var User $user */
                 $user = Auth::user();
@@ -39,9 +38,5 @@ class HeroController extends Controller
                 return $model;
             });
             return HeroResponse::make($entity)->created();
-        }catch (Exception $e){
-            return $this->jsonException($e);
-        }
-
     }
 }

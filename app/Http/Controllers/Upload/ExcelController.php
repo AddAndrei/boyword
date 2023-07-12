@@ -27,11 +27,7 @@ class ExcelController extends Controller
     #[Route("/api/excel/upload", methods: ["POST"])]
     public function upload(UploadRequest $request): Application|ResponseFactory|Response
     {
-        try {
-            $this->service->upload($request);
-            return response(null, SymfonyResponse::HTTP_NO_CONTENT);
-        } catch (Exception $e) {
-            return $this->jsonException($e);
-        }
+        $this->service->upload($request);
+        return response(null, SymfonyResponse::HTTP_NO_CONTENT);
     }
 }
