@@ -23,13 +23,9 @@ class RowsController extends Controller
     #[Route("/api/rows", methods: ["GET"])]
     public function show(RowRequest $request): Application|ResponseFactory|AnonymousResourceCollection|Response
     {
-        try {
-            $sortingDTO = RowSortingDTO::createFromRequest($request);
-            $rows = $this->service->get($sortingDTO);
-            return RowResponse::collection($rows);
-        }catch (Exception $e) {
-            return $this->jsonException($e);
-        }
+        $sortingDTO = RowSortingDTO::createFromRequest($request);
+        $rows = $this->service->get($sortingDTO);
+        return RowResponse::collection($rows);
     }
 
 }

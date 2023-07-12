@@ -27,36 +27,24 @@ class AuthController extends Controller
     #[Route("/api/register", methods: ["POST"])]
     public function register(RegisterRequest $request): UserResponse|Application|ResponseFactory|Response
     {
-        try {
-            $dto = RegisterDTO::createFromRequest($request);
-            $user = $this->service->store($dto);
-            return UserResponse::make($user)
-                ->setStatusCode(SymfonyResponse::HTTP_CREATED);
-        } catch (Exception $e) {
-            return $this->jsonException($e);
-        }
+        $dto = RegisterDTO::createFromRequest($request);
+        $user = $this->service->store($dto);
+        return UserResponse::make($user)
+            ->setStatusCode(SymfonyResponse::HTTP_CREATED);
     }
 
     #[Route("/api/logout", methods: ["POST"])]
     public function logout(Request $request): Application|ResponseFactory|Response|LogoutResponse
     {
-        try {
-            $request->user()->tokens()->delete();
-            return LogoutResponse::make($request);
-        } catch (Exception $e) {
-            return $this->jsonException($e);
-        }
+        $request->user()->tokens()->delete();
+        return LogoutResponse::make($request);
     }
 
     #[Route("/api/login", methods: ["GET"])]
     public function login(LoginRequest $request): UserResponse|Application|ResponseFactory|Response
     {
-        try {
-            $dto = LoginDTO::createFromRequest($request);
-            $user = $this->service->login($dto);
-            return UserResponse::make($user);
-        } catch (Exception $e) {
-            return $this->jsonException($e);
-        }
+        $dto = LoginDTO::createFromRequest($request);
+        $user = $this->service->login($dto);
+        return UserResponse::make($user);
     }
 }
