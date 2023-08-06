@@ -25,21 +25,11 @@ class MediatrController extends Controller
         $this->entityMediatr = new EntityMediatr(new Book(), new Service());
     }
 
-    public function show()
-    {
-        return "ok";
-    }
-
-
     #[Route("/api/mediatr", methods: ["POST"])]
     public function store(BookRequest $request): BookResponse|Application|ResponseFactory|Response
     {
-        try {
             $entity =  $this->entityMediatr->store(BookDTO::createFromRequest($request));
             return BookResponse::make($entity)->setStatusCode(SymfonyResponse::HTTP_CREATED);
-        }catch (Exception $e) {
-            return $this->jsonException($e);
-        }
     }
 
 }
