@@ -7,7 +7,6 @@ use App\Http\DTO\Rows\RowSortingDTO;
 use App\Http\Requests\Rows\RowRequest;
 use App\Http\Responses\Rows\RowResponse;
 use App\Http\Services\Rows\RowService;
-use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

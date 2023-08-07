@@ -3,7 +3,6 @@
 namespace App\Http\Responses;
 
 use App\Models\Books\Book;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class BookResponse extends Response
