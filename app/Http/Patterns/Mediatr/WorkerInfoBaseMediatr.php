@@ -2,7 +2,7 @@
 
 namespace App\Http\Patterns\Mediatr;
 
-use App\Http\Interfaces\Mediatr;
+use App\Http\Interfaces\Mediatr\Mediatr;
 
 class WorkerInfoBaseMediatr implements Mediatr
 {

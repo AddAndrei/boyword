@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
     Route::get('/user', [UserController::class, 'show']);
 
@@ -33,7 +33,13 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/mediatr', [MediatrController::class, 'show']);
     Route::post('/mediatr', [MediatrController::class, 'store']);
 
-    Route::resource('/hero', HeroController::class);
+    Route::resource('/hero', HeroController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
 
 });
 

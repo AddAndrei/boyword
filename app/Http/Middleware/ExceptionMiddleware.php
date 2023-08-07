@@ -13,7 +13,7 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response as SymphonyResponse;
 
-class ExceptionMiddleware extends Middleware
+class ExceptionMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
