@@ -3,10 +3,12 @@
 namespace App\Http\Services;
 
 use App\Http\DTO\DTO;
-use App\Http\Interfaces\Mediatr;
+use App\Http\Interfaces\Mediatr\Mediatr;
 use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Model;
 use Closure;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
 class EntityMediatr implements Mediatr
 {
     public function __construct(private BaseModel $model, private Service $service)
@@ -18,8 +20,18 @@ class EntityMediatr implements Mediatr
         return $this->service->store($this->model, $dataTransferObject, $closure);
     }
 
-    public function get()
+    public function all(DTO $dataTransferObject, ?Closure $closure = null): Collection
     {
-        return $this->service->get();
+        return $this->service->all($this->model, $dataTransferObject, $closure);
+    }
+
+    public function update(int $id, DTO $dataTransferObject, ?Closure $closure = null): Model
+    {
+        return $this->service->update($id, $this->model, $dataTransferObject, $closure);
+    }
+
+    public function get(string $field, mixed $value): Model
+    {
+        return $this->service->get($field, $value, $this->model);
     }
 }
