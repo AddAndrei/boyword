@@ -36,4 +36,10 @@ trait ResourceAsResponseTrait
         $this->statusCode = SymfonyResponse::HTTP_CREATED;
         return $this;
     }
+
+    public function deleted(): self
+    {
+        $this->statusCode = SymfonyResponse::HTTP_NO_CONTENT;
+        return $this;
+    }
 }

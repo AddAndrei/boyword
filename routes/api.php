@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/mediatr', [MediatrController::class, 'show']);
     Route::post('/mediatr', [MediatrController::class, 'store']);
 
+    Route::delete('/hero', [HeroController::class, 'destroy']);
     Route::resource('/hero', HeroController::class)
     ->only([
         'store',
