@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\DTO\DTO;
 use App\Http\Interfaces\Mediatr\AllableInterface;
+use App\Http\Interfaces\Mediatr\DestroyableInterface;
 use App\Http\Interfaces\Mediatr\GetableInterface;
 use App\Http\Interfaces\Mediatr\StorableInterface;
 use App\Http\Interfaces\Mediatr\UpdateableInterface;
@@ -11,16 +12,21 @@ use App\Models\BaseModel;
 use Closure;
 use Illuminate\Database\Eloquent\Collection;
 
-class Service implements StorableInterface, AllableInterface, UpdateableInterface, GetableInterface
+class Service implements StorableInterface,
+                         AllableInterface,
+                         UpdateableInterface,
+                         GetableInterface,
+                         DestroyableInterface
 {
 
-    public function store(BaseModel $model, DTO $dto, Closure $closure = null): BaseModel
+    public function store(BaseModel $model, DTO $dto = null, Closure $closure = null): BaseModel
     {
-        $model = new $model();
-        if ($closure) {
+        if ($closure)
             $model = $closure($model);
-        }
-        $model->propagateFromDTO($dto)->save();
+
+        if($dto)
+            $model->propagateFromDTO($dto);
+        $model->save();
         return $model;
     }
 
@@ -40,10 +46,16 @@ class Service implements StorableInterface, AllableInterface, UpdateableInterfac
     public function update(int $id, BaseModel $model, DTO $dto, Closure $closure = null): BaseModel
     {
         $model = $model::find($id);
-        if($closure)
+        if ($closure) {
             $model = $closure($model);
+        }
 
         $model->propagateFromDTO($dto)->save();
         return $model;
+    }
+
+    public function destroy(BaseModel $model, array $ids): void
+    {
+        $model::destroy($ids);
     }
 }

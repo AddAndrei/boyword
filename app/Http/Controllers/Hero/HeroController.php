@@ -4,14 +4,18 @@ namespace App\Http\Controllers\Hero;
 
 use App\Exceptions\HeroExceptions\MaxLimitedHeroException;
 use App\Http\Controllers\Controller;
+use App\Http\DTO\DTO;
 use App\Http\DTO\Hero\AllHeroDTO;
 use App\Http\DTO\Hero\HeroCreateDTO;
 use App\Http\DTO\Hero\UpdateHeroDTO;
+use App\Http\Requests\DestroyRequest;
 use App\Http\Requests\Hero\HeroCreateRequest;
 use App\Http\Requests\Hero\UpdateHeroRequest;
+use App\Http\Responses\DeletedResponse;
 use App\Http\Responses\Hero\HeroResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
+use App\Models\Skills\Axe;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -25,9 +29,11 @@ class HeroController extends Controller
 {
     private EntityMediatr $entityMediatr;
 
+    private EntityMediatr $axeMediatr;
     public function __construct()
     {
         $this->entityMediatr = new EntityMediatr(new Hero(), new Service());
+        $this->axeMediatr = new EntityMediatr(new Axe(), new Service());
     }
     #[Route("/api/hero", methods:["POST"])]
     public function store(HeroCreateRequest $request): HeroResponse|Application|ResponseFactory|Response
@@ -44,7 +50,7 @@ class HeroController extends Controller
             return HeroResponse::make($entity)->created();
     }
     #[Route("/api/hero/{id}", methods:["GET"])]
-    public function show(int $id)
+    public function show(int $id): HeroResponse
     {
         $hero = $this->entityMediatr->get('id', $id);
         return HeroResponse::make($hero);
@@ -64,5 +70,12 @@ class HeroController extends Controller
     {
         $hero = $this->entityMediatr->update($id, UpdateHeroDTO::createFromRequest($request));
         return HeroResponse::make($hero);
+    }
+
+    #[Route("/api/hero", methods: ["DELETE"])]
+    public function destroy(DestroyRequest $request): DeletedResponse
+    {
+        $this->entityMediatr->destroy($request->all());
+        return DeletedResponse::make([])->deleted();
     }
 }

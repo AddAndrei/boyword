@@ -15,7 +15,7 @@ class EntityMediatr implements Mediatr
     {
     }
 
-    public function store(DTO $dataTransferObject, ?Closure $closure = null): Model
+    public function store(DTO $dataTransferObject = null, ?Closure $closure = null): Model
     {
         return $this->service->store($this->model, $dataTransferObject, $closure);
     }
@@ -33,5 +33,10 @@ class EntityMediatr implements Mediatr
     public function get(string $field, mixed $value): Model
     {
         return $this->service->get($field, $value, $this->model);
+    }
+
+    public function destroy(array $ids): void
+    {
+        $this->service->destroy($this->model, $ids);
     }
 }

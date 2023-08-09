@@ -9,5 +9,5 @@ use Illuminate\Database\Eloquent\Model;
 
 interface StorableInterface
 {
-    public function store(BaseModel $model, DTO $dataTransferObject, ?Closure $closure = null): Model;
+    public function store(BaseModel $model, ?DTO $dataTransferObject = null, ?Closure $closure = null): Model;
 }
