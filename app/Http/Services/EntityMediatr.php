@@ -20,7 +20,7 @@ class EntityMediatr implements Mediatr
         return $this->service->store($this->model, $dataTransferObject, $closure);
     }
 
-    public function all(DTO $dataTransferObject, ?Closure $closure = null): Collection
+    public function all(?DTO $dataTransferObject = null, ?Closure $closure = null): Collection
     {
         return $this->service->all($this->model, $dataTransferObject, $closure);
     }

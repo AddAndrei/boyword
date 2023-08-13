@@ -3,8 +3,10 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Hero\HeroController;
+use App\Http\Controllers\Maps\MapController;
 use App\Http\Controllers\Patterns\MediatrController;
 use App\Http\Controllers\Rows\RowsController;
+use App\Http\Controllers\Tiles\TileController;
 use App\Http\Controllers\Upload\ExcelController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/mediatr', [MediatrController::class, 'show']);
     Route::post('/mediatr', [MediatrController::class, 'store']);
 
+    //heroes
     Route::delete('/hero', [HeroController::class, 'destroy']);
     Route::resource('/hero', HeroController::class)
     ->only([
@@ -41,6 +44,26 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'update',
         'show',
     ]);
+
+    //maps
+    Route::delete('/maps', [MapController::class, 'destroy']);
+    Route::resource('/maps', MapController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+    //tiles
+    Route::delete('/tile', [TileController::class, 'destroy']);
+    Route::resource('/tile', TileController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
 
 });
 
