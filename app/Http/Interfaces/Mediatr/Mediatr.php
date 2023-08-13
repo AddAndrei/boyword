@@ -11,7 +11,7 @@ interface Mediatr
 {
     public function store(?DTO $dataTransferObject, ?Closure $closure): Model;
 
-    public function all(DTO $dataTransferObject, ?Closure $closure): Collection;
+    public function all(?DTO $dataTransferObject, ?Closure $closure): Collection;
 
     public function update(int $id, DTO $dataTransferObject, ?Closure $closure): Model;
 

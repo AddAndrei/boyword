@@ -29,11 +29,9 @@ class HeroController extends Controller
 {
     private EntityMediatr $entityMediatr;
 
-    private EntityMediatr $axeMediatr;
     public function __construct()
     {
         $this->entityMediatr = new EntityMediatr(new Hero(), new Service());
-        $this->axeMediatr = new EntityMediatr(new Axe(), new Service());
     }
     #[Route("/api/hero", methods:["POST"])]
     public function store(HeroCreateRequest $request): HeroResponse|Application|ResponseFactory|Response
