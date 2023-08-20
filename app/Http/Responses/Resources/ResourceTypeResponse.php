@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Responses\Maps;
+namespace App\Http\Responses\Resources;
 
 use App\Http\Responses\Response;
-use App\Models\Map\Map;
+use App\Models\Resources\ResourceType;
 use Illuminate\Http\Request;
 
-class MapResponse extends Response
+class ResourceTypeResponse extends Response
 {
     /**
      * @param Request $request
@@ -14,11 +14,11 @@ class MapResponse extends Response
      */
     public function toArray($request): array
     {
-        /** @var Map $this */
+        /** @var ResourceType $this */
         return [
             'id' => $this->getKey(),
             'title' => $this->title,
-            'tiles' => $this->tiles,
+            'description' => $this->description,
         ];
     }
 }

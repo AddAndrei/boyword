@@ -17,4 +17,7 @@ class DTO extends DataTransferObject
         }
         return $dto->except(...array_keys($dto->all()));
     }
+
+
+
 }

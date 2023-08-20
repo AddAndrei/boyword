@@ -2,7 +2,6 @@
 
 namespace App\Http\Responses\Hero;
 
-use App\Http\Responses\Auth\UserResponse;
 use App\Http\Responses\Response;
 use App\Models\Hero\Hero;
 use Illuminate\Http\Request;
