@@ -21,11 +21,14 @@ class Service implements StorableInterface,
 
     public function store(BaseModel $model, DTO $dto = null, Closure $closure = null): BaseModel
     {
-        if ($closure)
+        $model = new $model();
+        if ($closure) {
             $model = $closure($model);
+        }
 
-        if($dto)
+        if ($dto) {
             $model->propagateFromDTO($dto);
+        }
         $model->save();
         return $model;
     }

@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Hero\HeroController;
 use App\Http\Controllers\Maps\MapController;
 use App\Http\Controllers\Patterns\MediatrController;
+use App\Http\Controllers\Resources\ResourceController;
+use App\Http\Controllers\Resources\ResourceTypeController;
 use App\Http\Controllers\Rows\RowsController;
 use App\Http\Controllers\Tiles\TileController;
 use App\Http\Controllers\Upload\ExcelController;
@@ -64,6 +66,22 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
             'update',
             'show',
         ]);
+
+    //resources
+    Route::resource('/resource-type', ResourceTypeController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+    Route::resource('/resource', ResourceController::class)->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
 
 });
 

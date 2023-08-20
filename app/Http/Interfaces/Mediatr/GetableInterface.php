@@ -3,6 +3,7 @@
 namespace App\Http\Interfaces\Mediatr;
 
 use App\Models\BaseModel;
+use Closure;
 
 interface GetableInterface
 {
