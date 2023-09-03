@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Responses\Tiles;
+namespace App\Http\Responses\Skills;
 
 use App\Http\Responses\Image\ImageResponse;
 use App\Http\Responses\Response;
-use App\Models\Tiles\Tile;
+use App\Models\Skills\Skill;
 use Illuminate\Http\Request;
 
-class TileResponse extends Response
+class SkillResponse extends Response
 {
     /**
      * @param Request $request
@@ -15,17 +15,18 @@ class TileResponse extends Response
      */
     public function toArray($request): array
     {
-        /** @var Tile $this */
+        /** @var Skill $this */
         return [
             'id' => $this->getKey(),
+            'level' => $this->level,
+            'experience' => $this->experience,
+            'attack_speed' => $this->attack_speed,
+            'damage' => $this->damage,
+            'skill_type' => $this->skill_type,
+            'parent_id' => $this->parent_id,
             'image' => $this->relationLoaded('image')
                 ? ImageResponse::make($this->image)
                 : null,
-            'title' => $this->title,
-            'width' => $this->width,
-            'height' => $this->height,
-            'collision' => (boolean)$this->collision,
-            'event' => $this->event,
         ];
     }
 }

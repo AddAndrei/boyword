@@ -4,13 +4,13 @@ namespace App\Http\Requests\Upload;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadRequest extends FormRequest
+class ImageRequest extends FormRequest
 {
     public function validationData(): array
     {
         return $this->only(
             [
-               'file',
+                'image',
             ]
         );
     }
@@ -18,7 +18,7 @@ class UploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|mimes:xlsx,xls',
+            'image' => 'required|mimes:png,jpeg',
         ];
     }
 }

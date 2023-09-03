@@ -10,7 +10,6 @@ class UpdateTileRequest extends FormRequest
     {
         return $this->only(
             [
-                'image',
                 'title',
                 'width',
                 'height',
@@ -23,7 +22,6 @@ class UpdateTileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'string|nullable',
             'title' => 'string|nullable',
             'width' => 'integer|nullable',
             'height' => 'integer|nullable',

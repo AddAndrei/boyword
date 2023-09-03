@@ -2,7 +2,9 @@
 
 namespace App\Models\Resources;
 
+use App\Http\Extensions\RelationsTraits\RelationImageTrait;
 use App\Models\BaseModel;
+use App\Models\Images\Image;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,12 +17,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $description
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int|null $image_id
  *
+ * @property Image $image
  * @property ResourceType $type
  * @author Shcerbakov Andrei
  */
 class Resource extends BaseModel
 {
+    use RelationImageTrait;
+
     protected $table = 'resources';
 
     protected $fillable = [
@@ -28,6 +34,7 @@ class Resource extends BaseModel
         'type_id',
         'title',
         'description',
+        'image_id',
     ];
 
     protected $dates = [
@@ -39,6 +46,4 @@ class Resource extends BaseModel
     {
         return $this->belongsTo(ResourceType::class, 'type_id');
     }
-
-
 }
