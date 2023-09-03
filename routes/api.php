@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\Attachmetns\ImageAttachmentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Hero\HeroController;
 use App\Http\Controllers\Maps\MapController;
-use App\Http\Controllers\Patterns\MediatrController;
 use App\Http\Controllers\Resources\ResourceController;
 use App\Http\Controllers\Resources\ResourceTypeController;
-use App\Http\Controllers\Rows\RowsController;
+use App\Http\Controllers\Skills\SkillController;
 use App\Http\Controllers\Tiles\TileController;
 use App\Http\Controllers\Upload\ExcelController;
+use App\Http\Controllers\Upload\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,10 +33,11 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/excel/upload', [ExcelController::class, 'upload']);
-    Route::get('/rows', [RowsController::class, 'show']);
 
-    Route::get('/mediatr', [MediatrController::class, 'show']);
-    Route::post('/mediatr', [MediatrController::class, 'store']);
+    //images
+    Route::post('/image/upload', [UploadController::class, 'upload']);
+    Route::get('/images', [UploadController::class, 'index']);
+    Route::delete('/images', [UploadController::class, 'destroy']);
 
     //heroes
     Route::delete('/hero', [HeroController::class, 'destroy']);
@@ -67,6 +69,10 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
             'show',
         ]);
 
+    //image attachment detachable
+    Route::post('/{entity}/{entityId}/attachment/{imageId}', [ImageAttachmentController::class, 'attachment']);
+    Route::post('/{entity}/{entityId}/detachable', [ImageAttachmentController::class, 'detachable']);
+
     //resources
     Route::resource('/resource-type', ResourceTypeController::class)
     ->only([
@@ -76,11 +82,22 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'show',
     ]);
 
+    //resources-types
+    Route::delete('/resource', [ResourceController::class, 'destroy']);
     Route::resource('/resource', ResourceController::class)->only([
         'store',
         'index',
         'update',
         'show',
+    ]);
+
+    //skills
+    Route::delete('/skill', [SkillController::class, 'destroy']);
+    Route::resource('/skill', SkillController::class)->only([
+       'store',
+       'index',
+       'update',
+       'show'
     ]);
 
 });

@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\DTO\Resources\CreateResourceDTO;
 use App\Http\DTO\Resources\FilterResourceDTO;
 use App\Http\DTO\Resources\UpdateResourceDTO;
+use App\Http\Requests\DestroyRequest;
 use App\Http\Requests\FilterRequest;
 use App\Http\Requests\Resources\CreateResourceRequest;
 use App\Http\Requests\Resources\UpdateResourceRequest;
+use App\Http\Responses\DeletedResponse;
 use App\Http\Responses\Resources\ResourceResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
@@ -44,8 +46,9 @@ class ResourceController extends Controller
     {
         return ResourceResponse::collection(
             $this->entityMediatr->all(null, function (Resource $resource) use ($request) {
-                return $resource::with(['type'])
+                return $resource::with(['type', 'image'])
                     ->filtrate(FilterResourceDTO::createFromRequest($request))
+                    ->orderBy('id', 'desc')
                     ->get();
             })
         );
@@ -71,5 +74,12 @@ class ResourceController extends Controller
             return $resource->load('type');
         });
         return ResourceResponse::make($updated);
+    }
+
+    #[Route('/api/resource', methods: ["DELETE"])]
+    public function destroy(DestroyRequest $request): DeletedResponse
+    {
+        $this->entityMediatr->destroy($request->all());
+        return DeletedResponse::make([])->deleted();
     }
 }

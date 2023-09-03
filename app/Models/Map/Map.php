@@ -25,6 +25,11 @@ class Map extends BaseModel
         'tiles',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
+
     protected function tiles(): Attribute
     {
         return Attribute::make(

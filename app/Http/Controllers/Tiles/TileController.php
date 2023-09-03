@@ -24,20 +24,23 @@ class TileController extends Controller
     {
         $this->entityMediatr = new EntityMediatr(new Tile(), new Service());
     }
+
     #[Route('/api/tile', methods: ["POST"])]
     public function store(CreateTileRequest $request): TileResponse
     {
         $tile = $this->entityMediatr->store(CreateTileDTO::createFromRequest($request));
         return TileResponse::make($tile)->created();
     }
+
     #[Route("/api/tile", methods: ["GET"])]
     public function index(): AnonymousResourceCollection
     {
         $tiles = $this->entityMediatr->all(null, function (Tile $tile){
-            return $tile::all();
+            return $tile::with('image')->get();
         });
         return TileResponse::collection($tiles);
     }
+
     #[Route('/api/tile/{id}', methods: ["PATCH"])]
     public function update(UpdateTileRequest $request, int $id): TileResponse
     {

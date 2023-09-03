@@ -10,12 +10,11 @@ class CreateTileRequest extends FormRequest
     {
         return $this->only(
             [
-                'image',
                 'title',
                 'width',
                 'height',
                 'collision',
-                'event',
+                'eventType',
             ]
         );
     }
@@ -23,7 +22,6 @@ class CreateTileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'string|required',
             'title' => 'string|required',
             'width' => 'integer|required',
             'height' => 'integer|required',

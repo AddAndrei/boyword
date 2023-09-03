@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Http\DTO\DTO;
 use App\Http\DTO\FilterDTO;
-use App\Http\DTO\Resources\FilterResourceDTO;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
