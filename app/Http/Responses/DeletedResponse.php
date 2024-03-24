@@ -2,6 +2,8 @@
 
 namespace App\Http\Responses;
 
+use http\Client\Request;
+
 class DeletedResponse extends Response
 {
     /**

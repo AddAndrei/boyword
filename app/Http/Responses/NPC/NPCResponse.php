@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Responses;
+namespace App\Http\Responses\NPC;
 
-use App\Models\Books\Book;
+use App\Http\Responses\Response;
+use App\Models\Npc\Npc;
 use Illuminate\Http\Request;
 
-class BookResponse extends Response
+class NPCResponse extends Response
 {
     /**
      * @param Request $request
@@ -13,12 +14,10 @@ class BookResponse extends Response
      */
     public function toArray($request): array
     {
-        /** @var Book $this */
+        /** @var Npc $this */
         return [
             'id' => $this->getKey(),
             'name' => $this->name,
-            'year' => $this->year,
-
         ];
     }
 }

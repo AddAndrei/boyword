@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Hero\HeroController;
 use App\Http\Controllers\Maps\MapController;
+use App\Http\Controllers\NPC\NpcController;
+use App\Http\Controllers\Quests\QuestController;
 use App\Http\Controllers\Resources\ResourceController;
 use App\Http\Controllers\Resources\ResourceTypeController;
 use App\Http\Controllers\Skills\SkillController;
@@ -99,6 +101,27 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
        'update',
        'show'
     ]);
+
+    //npc-s
+    Route::delete('/npc', [NpcController::class, 'destroy']);
+    Route::resource('/npc', NpcController::class)
+        ->only([
+            'store',
+            'index',
+            'show',
+            'update',
+        ]);
+
+    //quests
+    Route::delete('/quest', [QuestController::class, 'destroy']);
+    Route::resource('/quest', QuestController::class)
+    ->only([
+        'store',
+        'index',
+        'show',
+        'update',
+    ]);
+
 
 });
 
