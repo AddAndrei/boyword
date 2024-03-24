@@ -5,6 +5,7 @@ namespace App\Models\Hero;
 use App\Models\BaseModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Hero
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $user_id
  *
  * @property User $user
+ * @property HeroQuests $quests
  * @author Shcerbakov Andrei
  */
 class Hero extends BaseModel
@@ -39,5 +41,10 @@ class Hero extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function quests(): HasMany
+    {
+        return $this->hasMany(HeroQuests::class, 'hero_id');
     }
 }

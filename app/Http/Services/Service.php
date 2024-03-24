@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Exceptions\Attachments\EntityNotFoundException;
 use App\Http\DTO\DTO;
 use App\Http\Interfaces\Mediatr\AllableInterface;
 use App\Http\Interfaces\Mediatr\DestroyableInterface;
@@ -11,6 +12,7 @@ use App\Http\Interfaces\Mediatr\UpdateableInterface;
 use App\Models\BaseModel;
 use Closure;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Service implements StorableInterface,
                          AllableInterface,
@@ -33,12 +35,18 @@ class Service implements StorableInterface,
         return $model;
     }
 
-    public function get(string $field, mixed $value, BaseModel $model): BaseModel
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function get(string $field, mixed $value, BaseModel $model, Closure $closure = null): BaseModel
     {
-        return $model::where($field, $value)->first();
+        if($model::where($field, $value)->exists()) {
+            return $model::where($field, $value)->first();
+        }
+        throw new EntityNotFoundException("Entity {$model->getNameOfClass()} with $field:$value not found!");
     }
 
-    public function all(BaseModel $model, DTO $dto = null, Closure $closure = null): Collection
+    public function all(BaseModel $model, DTO $dto = null, Closure $closure = null): Collection|LengthAwarePaginator
     {
         if ($closure) {
             $model = $closure($model);

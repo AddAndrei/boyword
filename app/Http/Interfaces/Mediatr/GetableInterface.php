@@ -7,5 +7,5 @@ use Closure;
 
 interface GetableInterface
 {
-    public function get(string $field, mixed $value, BaseModel $model): BaseModel;
+    public function get(string $field, mixed $value, BaseModel $model, ?Closure $closure): BaseModel;
 }
