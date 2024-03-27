@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Exceptions\Attachments\EntityNotFoundException as EntityNotFoundExceptionAlias;
 use App\Http\DTO\DTO;
 use App\Http\Interfaces\Mediatr\Mediatr;
 use App\Models\BaseModel;
@@ -31,6 +32,13 @@ class EntityMediatr implements Mediatr
         return $this->service->update($id, $this->model, $dataTransferObject, $closure);
     }
 
+    /**
+     * @param string $field
+     * @param mixed $value
+     * @param Closure|null $closure
+     * @return Model
+     * @throws EntityNotFoundExceptionAlias
+     */
     public function get(string $field, mixed $value, ?Closure $closure = null): Model
     {
         return $this->service->get($field, $value, $this->model, $closure);

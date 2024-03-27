@@ -3,6 +3,7 @@
 namespace App\Models\Hero;
 
 use App\Models\BaseModel;
+use App\Models\Clans\Clan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Class Hero
  * @package App\Models\Hero
+ * @property int $id
  * @property string $name
  * @property int $min_damage
  * @property int $max_damage
@@ -46,5 +48,10 @@ class Hero extends BaseModel
     public function quests(): HasMany
     {
         return $this->hasMany(HeroQuests::class, 'hero_id');
+    }
+
+    public function clan(): BelongsTo
+    {
+        return $this->belongsTo(Clan::class, 'hero_id');
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Attachmetns\ImageAttachmentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Clans\ClanController;
 use App\Http\Controllers\Hero\HeroController;
 use App\Http\Controllers\Maps\MapController;
 use App\Http\Controllers\NPC\NpcController;
@@ -122,6 +123,16 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'update',
     ]);
 
+
+    //clans
+    Route::delete('/clans', [ClanController::class, 'destroy']);
+    Route::resource('/clans', ClanController::class)
+        ->only([
+            'store',
+            'index',
+            'show',
+            'update',
+        ]);
 
 });
 
