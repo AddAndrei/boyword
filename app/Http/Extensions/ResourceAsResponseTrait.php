@@ -16,7 +16,7 @@ trait ResourceAsResponseTrait
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         $response->setStatusCode($this->statusCode);
     }

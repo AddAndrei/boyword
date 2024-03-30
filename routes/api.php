@@ -26,13 +26,22 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+dispatch(new \App\Jobs\BanJob());
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
-    Route::get('/user', [UserController::class, 'show']);
+    //users
+    Route::post('/user/banned', [UserController::class, 'banned']);
+    Route::post('/user/unbanned', [UserController::class, 'unbanned']);
+    Route::resource('/user', UserController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/excel/upload', [ExcelController::class, 'upload']);

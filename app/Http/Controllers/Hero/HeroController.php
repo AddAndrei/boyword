@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Hero;
 
 use App\Exceptions\HeroExceptions\MaxLimitedHeroException;
 use App\Http\Controllers\Controller;
-use App\Http\DTO\DTO;
 use App\Http\DTO\Hero\AllHeroDTO;
 use App\Http\DTO\Hero\HeroCreateDTO;
 use App\Http\DTO\Hero\UpdateHeroDTO;
@@ -15,6 +14,7 @@ use App\Http\Responses\DeletedResponse;
 use App\Http\Responses\Hero\HeroResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
+use App\Models\Hero\Hero;
 use App\Models\Skills\Axe;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -22,7 +22,6 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Hero\Hero;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HeroController extends Controller

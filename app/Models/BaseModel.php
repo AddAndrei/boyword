@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Http\DTO\DTO;
 use App\Http\DTO\FilterDTO;
-use App\Http\DTO\PaginateWithFiltersSorintg\FilterAndSortingDTO;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
+use App\Http\Extensions\FiltersAndSortingPaginateTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 /**
  * Class BaseModel
@@ -19,8 +17,7 @@ use Illuminate\Support\Collection;
  */
 class BaseModel extends Model
 {
-    /** @var string */
-    private const PREFIX_METHOD_NAME = 'by';
+    use FiltersAndSortingPaginateTrait;
 
     /**
      * Заполнение аттрибутов
@@ -69,43 +66,7 @@ class BaseModel extends Model
         }
     }
 
-    /**
-     * @param Builder $builder
-     * @param PaginateWithFiltersDTO $dto
-     * @return Builder|LengthAwarePaginator|Collection
-     * @throws \Exception
-     */
-    public function scopePaginateWithFilters(
-        Builder $builder,
-        PaginateWithFiltersDTO $dto
-    ): Builder|LengthAwarePaginator|Collection {
-        if ($dto->filters) {
-            foreach ($dto->filters as $filter) {
-                /** @var FilterAndSortingDTO $filter */
-                $functionName = self::PREFIX_METHOD_NAME . ucfirst($filter->field);
-                if (!method_exists($this, $functionName)) {
-                    $className = $this->getNameOfClass();
-                    throw new \Exception("Method $functionName in $className is not exists!");
-                }
-                return call_user_func_array([$this, $functionName], [$builder, $filter->value])->get();
-            }
-        }
-        if ($dto->sorting) {
-            foreach ($dto->sorting as $sorting) {
-                /** @var FilterAndSortingDTO $sorting */
-                $builder->orderBy($sorting->field, $sorting->value);
-            }
-        }
-        if ($dto->per_page) {
-            return $builder->paginate($dto->per_page);
-        }
-        return $builder->get();
-    }
 
-    public function getNameOfClass(): string
-    {
-        return get_called_class();
-    }
 
 
 }

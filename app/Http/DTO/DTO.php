@@ -40,4 +40,9 @@ class DTO extends DataTransferObject
         }
         return $collection;
     }
+
+    public static function createFromArray(array $array): static
+    {
+        return new static([...$array]);
+    }
 }
