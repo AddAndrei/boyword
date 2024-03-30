@@ -25,6 +25,9 @@ class UserResponse extends Response
             'heroes' => $this->relationLoaded('heroes')
                 ? HeroResponse::collection($this->heroes)
                 : null,
+            'ban' => $this->relationLoaded('ban')
+                ? UserBlockResponse::make($this->ban)
+                : null,
         ];
     }
 }

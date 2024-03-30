@@ -5,7 +5,6 @@ namespace App\Http\Services\Clans;
 use App\Exceptions\ClanException\HeroInAnotherClanException;
 use App\Exceptions\ClanException\HeroInClanExistException;
 use App\Http\DTO\Clans\CreateClanDTO;
-use App\Http\DTO\Clans\UpdateClanDTO;
 use App\Models\Clans\Clan;
 use App\Models\Clans\HeroesInClan;
 use App\Models\Hero\Hero;
