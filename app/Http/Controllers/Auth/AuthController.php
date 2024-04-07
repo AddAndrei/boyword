@@ -10,17 +10,16 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Responses\Auth\LogoutResponse;
 use App\Http\Responses\Auth\UserResponse;
 use App\Http\Services\Auth\UserService;
-use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Spatie\DataTransferObject\Exceptions\UnknownProperties as UnknownPropertiesAlias;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AuthController extends Controller
 {
-    public function __construct(private UserService $service)
+    public function __construct(private readonly UserService $service)
     {
     }
 
@@ -29,8 +28,7 @@ class AuthController extends Controller
     {
         $dto = RegisterDTO::createFromRequest($request);
         $user = $this->service->store($dto);
-        return UserResponse::make($user)
-            ->setStatusCode(SymfonyResponse::HTTP_CREATED);
+        return UserResponse::make($user)->created();
     }
 
     #[Route("/api/logout", methods: ["POST"])]
@@ -40,6 +38,11 @@ class AuthController extends Controller
         return LogoutResponse::make($request);
     }
 
+    /**
+     * @param LoginRequest $request
+     * @return UserResponse|Application|ResponseFactory|Response
+     * @throws UnknownPropertiesAlias
+     */
     #[Route("/api/login", methods: ["GET"])]
     public function login(LoginRequest $request): UserResponse|Application|ResponseFactory|Response
     {
