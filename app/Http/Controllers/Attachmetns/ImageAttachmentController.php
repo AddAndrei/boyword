@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Attachmetns;
 use App\Exceptions\Attachments\EntityNotFoundException;
 use App\Exceptions\GeneralJsonException;
 use App\Http\Controllers\Controller;
+use App\Http\Responses\Items\ItemResponse;
 use App\Http\Responses\Resources\ResourceResponse;
 use App\Http\Responses\Response;
 use App\Http\Responses\Skills\SkillResponse;
@@ -12,6 +13,7 @@ use App\Http\Responses\Tiles\TileResponse;
 use App\Http\Services\Images\ImagesService;
 use App\Models\BaseModel;
 use App\Models\Images\Image;
+use App\Models\Items\Item;
 use App\Models\Skills\Skill;
 use App\Models\Tiles\Tile;
 use App\Models\Resources\Resource;
@@ -27,6 +29,7 @@ class ImageAttachmentController extends Controller
         'tile' => Tile::class,
         'resource' => Resource::class,
         'skill' => Skill::class,
+        'item' => Item::class,
     ];
 
     #[Route('/api/{entity}/{entityId}/attachment/{imageId}', methods: ["POST"])]
@@ -71,6 +74,7 @@ class ImageAttachmentController extends Controller
             'tile' => TileResponse::make($findEntity),
             'resource' => ResourceResponse::make($findEntity),
             'skill' => SkillResponse::make($findEntity),
+            'item' => ItemResponse::make($findEntity),
         };
     }
 }

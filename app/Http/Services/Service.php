@@ -40,6 +40,9 @@ class Service implements StorableInterface,
      */
     public function get(string $field, mixed $value, BaseModel $model, Closure $closure = null): BaseModel
     {
+        if($closure) {
+            return $closure($model);
+        }
         if($model::where($field, $value)->exists()) {
             return $model::where($field, $value)->first();
         }
