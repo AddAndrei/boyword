@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Clans\ClanController;
 use App\Http\Controllers\Hero\HeroController;
+use App\Http\Controllers\Items\ItemController;
 use App\Http\Controllers\Maps\MapController;
 use App\Http\Controllers\NPC\NpcController;
 use App\Http\Controllers\Quests\QuestController;
@@ -103,6 +104,14 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'show',
     ]);
 
+    //items
+    Route::delete('/item', [ItemController::class, 'destroy']);
+    Route::resource('/item', ItemController::class)->only([
+        'store',
+        'index',
+        'update',
+        'show'
+    ]);
     //skills
     Route::delete('/skill', [SkillController::class, 'destroy']);
     Route::resource('/skill', SkillController::class)->only([

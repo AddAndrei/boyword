@@ -65,8 +65,4 @@ class BaseModel extends Model
             }
         }
     }
-
-
-
-
 }
