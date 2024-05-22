@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Response extends JsonResource
 {
+    protected $dateFormat = 'd.m.Y H:i:s';
+
     use ResourceAsResponseTrait;
     public static $wrap = '';
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,16 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     ]);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    //tasks
+    Route::resource('/tasks', TaskController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
 });
 
 
