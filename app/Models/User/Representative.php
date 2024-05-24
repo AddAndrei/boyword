@@ -3,33 +3,33 @@
 namespace App\Models\User;
 
 use App\Models\BaseModel;
+use App\Models\Tasks\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class UserBlock
- * @package App\Models
  * @property int $id
  * @property int $user_id
- * @property Carbon|null $ban_time
- * @property string $reason
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property int $task_id
+ * @property string $role=observer
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ *
  *
  * @property User $user
- * @author Shcerbakov Andrei
+ * @property Task $task
+ *
  */
-class UserBlock extends BaseModel
+class Representative extends BaseModel
 {
-    protected $table = 'users_block';
+    protected $table = 'representatives';
 
     protected $fillable = [
-        'reason',
+        'role',
     ];
 
     protected $dates = [
-        'ban_time',
         'created_at',
         'updated_at',
     ];
@@ -37,5 +37,10 @@ class UserBlock extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class, 'task_id');
     }
 }

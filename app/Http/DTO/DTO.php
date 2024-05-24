@@ -5,13 +5,14 @@ namespace App\Http\DTO;
 use Illuminate\Http\Request;
 use Spatie\DataTransferObject\DataTransferObject;
 use Illuminate\Support\Collection;
+use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class DTO extends DataTransferObject
 {
     /**
      * @param Request $request
      * @return static
-     * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
+     * @throws UnknownProperties
      */
     public static function createFromRequest(Request $request): static
     {
@@ -27,7 +28,7 @@ class DTO extends DataTransferObject
     /**
      * @param array $array
      * @return Collection
-     * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
+     * @throws UnknownProperties
      */
     public static function collection(array $array): Collection
     {

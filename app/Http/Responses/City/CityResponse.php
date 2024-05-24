@@ -1,26 +1,24 @@
 <?php
 
-namespace App\Http\Responses\Auth;
+namespace App\Http\Responses\City;
+
+
 use App\Http\Responses\Response;
-use App\Models\User;
+use App\Models\City\City;
 use Illuminate\Http\Request;
 
-
-class UserResponse extends Response
+class CityResponse extends Response
 {
-
     /**
      * @param Request $request
      * @return array<string, mixed>
      */
     public function toArray($request): array
     {
-        /** @var User $this */
+        /** @var City $this */
         return [
             'id' => $this->getKey(),
-            'name' => $this->name,
-            'email' => $this->email,
-            'token' => $this->token,
+            'title' => $this->title,
         ];
     }
 }

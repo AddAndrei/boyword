@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Responses\Auth;
+
 use App\Http\Responses\Response;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
-class UserResponse extends Response
+class CreatorResponse extends Response
 {
-
     /**
      * @param Request $request
      * @return array<string, mixed>
@@ -20,7 +19,6 @@ class UserResponse extends Response
             'id' => $this->getKey(),
             'name' => $this->name,
             'email' => $this->email,
-            'token' => $this->token,
         ];
     }
 }

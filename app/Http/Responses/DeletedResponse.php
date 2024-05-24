@@ -2,7 +2,7 @@
 
 namespace App\Http\Responses;
 
-use http\Client\Request;
+use Illuminate\Http\Request;
 
 class DeletedResponse extends Response
 {
