@@ -61,8 +61,19 @@ class BaseModel extends Model
                 } else {
                     $relationEntity = $relation['entity']::find($DTO->{$key});
                     $this->{$relation['method']}()->associate($relationEntity);
+                    if (isset($relation['callable'])){
+                        $this->callableWithRelations($relation['callable'], $relationEntity);
+                    }
                 }
             }
         }
     }
+
+    private function callableWithRelations(array $callables , BaseModel $model): void
+    {
+        foreach ($callables as $method) {
+            call_user_func_array([$this, $method], [$model]);
+        }
+    }
+
 }

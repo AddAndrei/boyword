@@ -1,8 +1,14 @@
 <?php
 
+use App\Http\Controllers\Add\AddController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\City\CityController;
+use App\Http\Controllers\Color\ColorController;
+use App\Http\Controllers\Mark\MarkController;
+use App\Http\Controllers\Model\ModelController;
 use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\Volume\VolumeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +24,65 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
+
+Route::delete('/adds', [AddController::class, 'destroy']);
+Route::resource('/adds', AddController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+
+Route::delete('/volumes', [VolumeController::class, 'destroy']);
+Route::resource('/volumes', VolumeController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+
+Route::delete('/colors', [ColorController::class, 'destroy']);
+Route::resource('/colors', ColorController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+Route::delete('/models', [ModelController::class, 'destroy']);
+Route::resource('/models', ModelController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+
+Route::delete('/marks', [MarkController::class, 'destroy']);
+Route::resource('/marks', MarkController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+
+
+Route::delete('/cities', [CityController::class, 'destroy']);
+Route::resource('/cities', CityController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
 
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
