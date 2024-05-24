@@ -24,7 +24,6 @@ class TaskController extends Controller
     {
         $this->mediatr = new EntityMediatr(new Task(), new Service());
     }
-
     /**
      * @throws UnknownProperties
      */
