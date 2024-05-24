@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Responses\Response;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,13 @@ class GeneralJsonException extends Exception
      */
     public function render(Request $request): JsonResponse
     {
+        if (!env('APP_LOCAL_DEV')) {
+            return (new Response(
+                [
+                    'error' => $this->message
+                ]
+            ))->response()->setStatusCode($this->code);
+        }
         return (new JsonResource([
             'errors' => [
                 'message' => $this->getMessage(),

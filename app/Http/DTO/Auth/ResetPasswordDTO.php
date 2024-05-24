@@ -4,9 +4,8 @@ namespace App\Http\DTO\Auth;
 
 use App\Http\DTO\DTO;
 
-class LoginDTO extends DTO
+class ResetPasswordDTO extends DTO
 {
     public string $phone;
-
     public string $password;
 }

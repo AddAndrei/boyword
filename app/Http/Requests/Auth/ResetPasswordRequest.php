@@ -4,14 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class LoginRequest
- * @package App\Http\Requests\Auth
- * @property string $email
- * @property string $password
- * @author Shcerbakov Andrei
- */
-class LoginRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     public function validationData(): array
     {
@@ -27,7 +20,14 @@ class LoginRequest extends FormRequest
     {
         return [
             'phone' => 'string|required',
-            'password' => 'string|required',
+            'password' => 'required|string|min:6',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'password.min' => 'Пароль должен быть 6 или более символов',
         ];
     }
 }

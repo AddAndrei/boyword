@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
+Route::post('/verification-code/create', [AuthController::class, 'createCode']);
+Route::post('/verification-code/verify', [AuthController::class, 'verifyCode']);
+Route::post('/user/reset', [AuthController::class, 'resetPassword']);
 
 Route::delete('/adds', [AddController::class, 'destroy']);
 Route::resource('/adds', AddController::class)

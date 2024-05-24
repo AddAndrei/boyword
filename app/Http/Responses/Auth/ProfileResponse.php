@@ -1,27 +1,25 @@
 <?php
 
 namespace App\Http\Responses\Auth;
+
 use App\Http\Responses\Response;
-use App\Models\User;
+use App\Models\Auth\Profile;
 use Illuminate\Http\Request;
 
-
-class UserResponse extends Response
+class ProfileResponse extends Response
 {
-
     /**
      * @param Request $request
      * @return array<string, mixed>
      */
     public function toArray($request): array
     {
-        /** @var User $this */
+        /** @var Profile $this */
         return [
             'id' => $this->getKey(),
-            'token' => $this->token,
-            'profile' => $this->relationLoaded('profile')
-                ? ProfileResponse::make($this->profile)
-                : null,
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'birth_day' => $this->birth_day ? $this->birth_day->toIso8601String() : null,
         ];
     }
 }

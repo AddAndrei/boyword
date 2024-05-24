@@ -13,7 +13,7 @@ use App\Http\DTO\DTO;
 class RegisterDTO extends DTO
 {
     public string $name;
-    public string $email;
+    public string $phone;
     public string $password;
-    public string $password_confirmation;
+    public string $last_name;
 }

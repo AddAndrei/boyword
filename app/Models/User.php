@@ -4,8 +4,7 @@ namespace App\Models;
 
 use App\Http\DTO\DTO;
 use App\Http\Extensions\FiltersAndSortingPaginateTrait;
-use App\Models\Hero\Hero;
-use App\Models\User\UserBlock;
+use App\Models\Auth\Profile;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,12 +17,12 @@ use Laravel\Sanctum\HasApiTokens;
  * Class User
  * @package App\Models
  * @property string|null $name
- * @property string $email
+ *
  * @property string $password
  * @property string $token
+ * @property string $phone
  *
- * @property HasMany $heroes
- * @property UserBlock $ban
+ * @property HasOne $profile
  * @author Shcerbakov Andrei
  */
 class User extends Authenticatable
@@ -37,6 +36,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'phone',
     ];
 
     /**
@@ -58,15 +58,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function heroes(): HasMany
-    {
-        return $this->hasMany(Hero::class, 'user_id', 'id');
-    }
 
-    public function ban(): HasOne
-    {
-        return $this->hasOne(UserBlock::class, 'user_id');
-    }
+
 
     /**
      * Заполнение аттрибутов
@@ -82,6 +75,12 @@ class User extends Authenticatable
         return $this;
     }
 
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+
     public function byName(Builder $query, string $value): Builder
     {
         return $query->where("name", "like", "%$value%");
@@ -96,4 +95,7 @@ class User extends Authenticatable
     {
         return $query->where("email", "like", "%$value%");
     }
+
+
+
 }
