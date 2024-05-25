@@ -14,4 +14,5 @@ class CreateAddDTO extends DTO
     public int $model_id;
     public int $memory_id;
     public int $color_id;
+    public int $category_id;
 }

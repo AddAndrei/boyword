@@ -28,69 +28,12 @@ Route::post('/verification-code/create', [AuthController::class, 'createCode']);
 Route::post('/verification-code/verify', [AuthController::class, 'verifyCode']);
 Route::post('/user/reset', [AuthController::class, 'resetPassword']);
 
-Route::delete('/adds', [AddController::class, 'destroy']);
-Route::resource('/adds', AddController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
 
-
-Route::delete('/volumes', [VolumeController::class, 'destroy']);
-Route::resource('/volumes', VolumeController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
-
-
-Route::delete('/colors', [ColorController::class, 'destroy']);
-Route::resource('/colors', ColorController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
-
-Route::delete('/models', [ModelController::class, 'destroy']);
-Route::resource('/models', ModelController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
-
-
-Route::delete('/marks', [MarkController::class, 'destroy']);
-Route::resource('/marks', MarkController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
-
-
-
-Route::delete('/cities', [CityController::class, 'destroy']);
-Route::resource('/cities', CityController::class)
-    ->only([
-        'store',
-        'index',
-        'update',
-        'show',
-    ]);
 
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
     //users
-    Route::post('/user/banned', [UserController::class, 'banned']);
+    /*Route::post('/user/banned', [UserController::class, 'banned']);
     Route::post('/user/unbanned', [UserController::class, 'unbanned']);
     Route::resource('/user', UserController::class)
     ->only([
@@ -98,12 +41,64 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'index',
         'update',
         'show',
-    ]);
+    ]);*/
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //tasks
-    Route::resource('/tasks', TaskController::class)
+    //adds
+    Route::delete('/adds', [AddController::class, 'destroy']);
+    Route::resource('/adds', AddController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
+    //volumes
+    Route::delete('/volumes', [VolumeController::class, 'destroy']);
+    Route::resource('/volumes', VolumeController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
+    //colors
+    Route::delete('/colors', [ColorController::class, 'destroy']);
+    Route::resource('/colors', ColorController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
+    //models
+    Route::delete('/models', [ModelController::class, 'destroy']);
+    Route::resource('/models', ModelController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
+    //marks
+    Route::delete('/marks', [MarkController::class, 'destroy']);
+    Route::resource('/marks', MarkController::class)
+        ->only([
+            'store',
+            'index',
+            'update',
+            'show',
+        ]);
+
+
+    //cities
+    Route::delete('/cities', [CityController::class, 'destroy']);
+    Route::resource('/cities', CityController::class)
         ->only([
             'store',
             'index',

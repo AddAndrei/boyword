@@ -4,9 +4,11 @@ namespace App\Http\Responses\Add;
 
 use App\Http\Responses\Auth\CreatorResponse;
 use App\Http\Responses\Auth\UserResponse;
+use App\Http\Responses\Category\CategoryResponse;
 use App\Http\Responses\City\CityResponse;
 use App\Http\Responses\Color\ColorResponse;
 use App\Http\Responses\Mark\MarkResponse;
+use App\Http\Responses\Model\ModelResponse;
 use App\Http\Responses\Response;
 use App\Http\Responses\Volume\VolumeResponse;
 use App\Models\Adds\Add;
@@ -36,8 +38,8 @@ class AddResponse extends Response
             'mark' => $this->relationLoaded('mark')
                 ? MarkResponse::make($this->mark)
                 : null,
-            'model' => $this->relationLoaded('mark')
-                ? MarkResponse::make($this->mark)
+            'model' => $this->relationLoaded('model')
+                ? ModelResponse::make($this->model)
                 : null,
             'memory' => $this->relationLoaded('memory')
                 ? VolumeResponse::make($this->memory)
@@ -47,6 +49,9 @@ class AddResponse extends Response
                 : null,
             'user' => $this->relationLoaded('user')
                 ? UserResponse::make($this->user)
+                : null,
+            'category' => $this->relationLoaded('category')
+                ? CategoryResponse::make($this->category)
                 : null,
         ];
     }
