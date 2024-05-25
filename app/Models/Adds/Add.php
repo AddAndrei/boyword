@@ -3,6 +3,7 @@
 namespace App\Models\Adds;
 
 use App\Models\BaseModel;
+use App\Models\Categories\Category;
 use App\Models\City\City;
 use App\Models\Color\Color;
 use App\Models\Mark\Mark;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Models\Volume\VolumeMemory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property int $id
@@ -25,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $model_id
  * @property int $memory_id
  * @property int $user_id
+ * @property int $color_id
+ * @property int $category_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -34,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property VolumeMemory $memory
  * @property Color $color
  * @property User $user
+ * @property Category $category
  */
 class Add extends BaseModel
 {
@@ -62,7 +67,7 @@ class Add extends BaseModel
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function mark():BelongsTo
+    public function mark(): BelongsTo
     {
         return $this->belongsTo(Mark::class, 'mark_id');
     }
@@ -71,6 +76,7 @@ class Add extends BaseModel
     {
         return $this->belongsTo(Model::class, 'model_id');
     }
+
     public function memory(): BelongsTo
     {
         return $this->belongsTo(VolumeMemory::class, 'memory_id');
@@ -79,6 +85,11 @@ class Add extends BaseModel
     public function color(): BelongsTo
     {
         return $this->belongsTo(Color::class, 'color_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function user(): BelongsTo
@@ -98,4 +109,19 @@ class Add extends BaseModel
         $this->filtrate = "{$this->filtrate}{$model->id}";
     }
 
+    public function updateFiltrateAggregation(): void
+    {
+        $this->filtrate = "{$this->city_id}{$this->mark_id}{$this->model_id}{$this->memory_id}{$this->color_id}";
+        $this->aggregate = "{$this->mark->title} {$this->model->title} {$this->memory->title} {$this->color->title}";
+    }
+
+    public function byCategory(Builder $query, int $value): Builder
+    {
+        return $query->where('category_id', $value);
+    }
+
+    public function bySearch(Builder $query, string $value): Builder
+    {
+        return $query->where('aggregate', 'like', "%$value%");
+    }
 }

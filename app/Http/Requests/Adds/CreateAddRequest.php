@@ -18,6 +18,7 @@ class CreateAddRequest extends FormRequest
                 'model_id',
                 'memory_id',
                 'color_id',
+                'category_id',
             ]
         );
     }
@@ -33,6 +34,7 @@ class CreateAddRequest extends FormRequest
             'model_id' => 'integer|required|exists:models,id',
             'memory_id' => 'integer|required|exists:memories,id',
             'color_id' => 'integer|required|exists:colors,id',
+            'category_id' => 'integer|required|exists:categories,id',
         ];
     }
 }
