@@ -2,23 +2,22 @@
 
 use App\Http\Controllers\Add\AddController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
 use App\Http\Controllers\Mark\MarkController;
 use App\Http\Controllers\Model\ModelController;
-use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\Volume\VolumeController;
+use App\Http\Controllers\YandexDisk\YandexDiskController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Api Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
+| Here is where you can register Api routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| is assigned the "api" middleware group. Enjoy building your Api!
 |
 */
 
@@ -28,7 +27,7 @@ Route::post('/verification-code/create', [AuthController::class, 'createCode']);
 Route::post('/verification-code/verify', [AuthController::class, 'verifyCode']);
 Route::post('/user/reset', [AuthController::class, 'resetPassword']);
 
-
+Route::post('/yandex', [YandexDiskController::class, 'index']);
 
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 

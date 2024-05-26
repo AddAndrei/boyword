@@ -7,7 +7,6 @@ use App\Http\Extensions\FiltersAndSortingPaginateTrait;
 use App\Models\Auth\Profile;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Class User
  * @package App\Models
+ * @property int $id
  * @property string|null $name
  *
  * @property string $password

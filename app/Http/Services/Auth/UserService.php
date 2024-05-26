@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Auth;
 
+use App\Api\YandexDisk;
 use App\Exceptions\Auth\InvalidPasswordException;
 use App\Exceptions\Auth\UserExistedException;
 use App\Http\DTO\Auth\CreateCodeDTO;
@@ -10,6 +11,7 @@ use App\Http\DTO\Auth\RegisterDTO;
 use App\Http\DTO\Auth\ResetPasswordDTO;
 use App\Http\DTO\Auth\VerifyCodeDTO;
 use App\Http\Responses\OkResponse;
+use App\Jobs\CreateFolderUserJob;
 use App\Models\Auth\Code;
 use App\Models\Auth\Profile;
 use App\Models\User;
@@ -39,6 +41,7 @@ class UserService
         $user->name = $dto->name;
         $user->password = bcrypt($dto->password);
         $user->save();
+        CreateFolderUserJob::dispatch(new YandexDisk(), $user->id);
         $profile = new Profile();
         $profile->name = $dto->name;
         $profile->last_name = $dto->last_name;
