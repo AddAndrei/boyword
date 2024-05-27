@@ -6,13 +6,16 @@ use App\Models\BaseModel;
 use App\Models\Categories\Category;
 use App\Models\City\City;
 use App\Models\Color\Color;
+use App\Models\Image\Image;
 use App\Models\Mark\Mark;
 use App\Models\Models\Model;
 use App\Models\User;
 use App\Models\Volume\VolumeMemory;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -39,6 +42,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property Color $color
  * @property User $user
  * @property Category $category
+ * @property Image[]|Collection $images
  */
 class Add extends BaseModel
 {
@@ -95,6 +99,11 @@ class Add extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class, 'add_id', 'id');
     }
 
     public function aggregation(BaseModel $model): void

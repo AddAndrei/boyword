@@ -51,7 +51,7 @@ class AddController extends Controller
     public function store(CreateAddRequest $request): AddResponse
     {
         $dto = CreateAddDTO::createFromRequest($request);
-        $add = $this->mediatr->store($dto, fn(Add $add) => AddService::create($add, $dto));
+        $add = $this->mediatr->store($dto, fn(Add $add) => AddService::create($add, $dto, $request->file('images')));
         return AddResponse::make($add)->created();
     }
 
@@ -73,7 +73,7 @@ class AddController extends Controller
     public function show(int $id): AddResponse
     {
         $add = $this->mediatr->get('id', $id, function (Add $add) use ($id) {
-            return $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile','category'])
+            return $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile','category', 'images'])
                 ->where('id', $id)
                 ->first();
         });
