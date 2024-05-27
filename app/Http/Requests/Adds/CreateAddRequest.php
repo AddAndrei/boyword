@@ -19,6 +19,7 @@ class CreateAddRequest extends FormRequest
                 'memory_id',
                 'color_id',
                 'category_id',
+                'images',
             ]
         );
     }
@@ -35,6 +36,8 @@ class CreateAddRequest extends FormRequest
             'memory_id' => 'integer|required|exists:memories,id',
             'color_id' => 'integer|required|exists:colors,id',
             'category_id' => 'integer|required|exists:categories,id',
+            'images' => 'array|required',
+            'images.*.' => 'required|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 }

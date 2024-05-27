@@ -7,6 +7,7 @@ use App\Http\Responses\Auth\UserResponse;
 use App\Http\Responses\Category\CategoryResponse;
 use App\Http\Responses\City\CityResponse;
 use App\Http\Responses\Color\ColorResponse;
+use App\Http\Responses\Image\ImageResponse;
 use App\Http\Responses\Mark\MarkResponse;
 use App\Http\Responses\Model\ModelResponse;
 use App\Http\Responses\Response;
@@ -32,6 +33,9 @@ class AddResponse extends Response
             'aggregate'=> $this->aggregate,
             'filtrate' => $this->filtrate,
             'price' => $this->price,
+            'images' => $this->relationLoaded('images')
+                ? ImageResponse::collection($this->images)
+                : null,
             'city' => $this->relationLoaded('city')
                 ? CityResponse::make($this->city)
                 : null,
