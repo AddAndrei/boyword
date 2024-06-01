@@ -51,7 +51,7 @@ class AddController extends Controller
     public function store(CreateAddRequest $request): AddResponse
     {
         $dto = CreateAddDTO::createFromRequest($request);
-        $add = $this->mediatr->store($dto, fn(Add $add) => AddService::create($add, $dto, $request->file('images')));
+        $add = $this->mediatr->store($dto, fn(Add $add) => AddService::create($request, $add, $dto, $request->file('images')));
         return AddResponse::make($add)->created();
     }
 

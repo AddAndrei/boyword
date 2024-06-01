@@ -5,6 +5,7 @@ namespace App\Http\Services\Add;
 use App\Api\YandexDisk;
 use App\Http\DTO\Adds\CreateAddDTO;
 use App\Http\DTO\Adds\UpdateAddDTO;
+use App\Http\Requests\Adds\CreateAddRequest;
 use App\Http\Services\Image\ImagesService;
 use App\Jobs\UploadImageToDiskJob;
 use App\Models\Adds\Add;
@@ -19,6 +20,7 @@ use App\Models\Volume\VolumeMemory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AddService
@@ -56,24 +58,26 @@ class AddService
         ]
     ];
 
-    public static function create(Add $add, CreateAddDTO $dto, array $images): Add
+    public static function create(CreateAddRequest $request, Add $add, CreateAddDTO $dto, $images): Add
     {
+        $dto = self::createCity($dto, $request->get('city'));
         $add->updateRelations($dto, self::$relations);
         $user = Auth::user();
         $add->user()->associate($user);
         $add->propagateFromDTO($dto)->save();
+
         if (!empty($images)) {
             $webpName = [];
-            foreach($images as $image) {
+            foreach ($images as $image) {
                 /** @var  UploadedFile $image */
                 $imageName = Storage::disk('time')->put('', $image);
                 $path = Storage::disk('time')->path('');
                 $path .= $imageName;
-                $newPath = storage_path("app/images/time/");
+                $newPath = str_replace("storage", "", storage_path("public/images/time/"));
                 $imageWebp = ImagesService::convertImage($path, $newPath);
                 Storage::disk('time')->delete($imageName);
                 $webpName = last(explode('/', $imageWebp));
-                $fullPath = env('APP_URL') . '/public/images/time/' . $webpName;
+                $fullPath = env('APP_URL') . '/images/time/' . $webpName;
                 $entityImage = new Image();
                 $entityImage->url = $fullPath;
                 $entityImage->add()->associate($add);
@@ -81,8 +85,24 @@ class AddService
             }
 
             //UploadImageToDiskJob::dispatch(new YandexDisk(), $images, $add->id, $user->id);
+        }else{
+            Log::error('not images', [$images]);
         }
+
+        $add->load('images');
         return $add;
+    }
+
+
+    private static function createCity(CreateAddDTO $dto, string $cityName): CreateAddDTO
+    {
+        if ($cityName) {
+            $city = (City::where('title', $cityName)->exists()) ? City::where('title', $cityName)->first() : new City();
+            $city->title = $cityName;
+            $city->save();
+            $dto->city_id = $city->id;
+        }
+        return $dto;
     }
 
     public static function update(Add $add, UpdateAddDTO $dto): Add

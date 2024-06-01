@@ -43,19 +43,16 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
         'resource' => [
             'driver' => 'local',
             'root' => storage_path('app/images/resource'),
             'throw' => false,
         ],
-
         'time' => [
             'driver' => 'local',
             'root' => storage_path('app/time'),
             'throw' => false,
         ],
-
         'tile' => [
             'driver' => 'local',
             'root' => storage_path('app/images/tile'),
