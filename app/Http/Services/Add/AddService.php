@@ -77,7 +77,7 @@ class AddService
                 $imageWebp = ImagesService::convertImage($path, $newPath);
                 Storage::disk('time')->delete($imageName);
                 $webpName = last(explode('/', $imageWebp));
-                $fullPath = env('APP_URL') . 'images/time/' . $webpName;
+                $fullPath = env('APP_URL') . '/images/time/' . $webpName;
                 $entityImage = new Image();
                 $entityImage->url = $fullPath;
                 $entityImage->add()->associate($add);
