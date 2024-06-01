@@ -6,6 +6,7 @@ use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
 use App\Http\Controllers\Mark\MarkController;
 use App\Http\Controllers\Model\ModelController;
+use App\Http\Controllers\System\SystemController;
 use App\Http\Controllers\Volume\VolumeController;
 use App\Http\Controllers\YandexDisk\YandexDiskController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::post('/verification-code/verify', [AuthController::class, 'verifyCode']);
 Route::post('/user/reset', [AuthController::class, 'resetPassword']);
 
 Route::post('/yandex', [YandexDiskController::class, 'index']);
+Route::get('/mm', [SystemController::class, 'showEntities']);
+
 
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
