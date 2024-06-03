@@ -36,7 +36,7 @@ class AddController extends Controller
     public function index(PaginateWithFiltersRequest $request): AnonymousResourceCollection
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
-        $adds = $this->mediatr->all($dto, fn(Add $add) => Add::with(['city'])
+        $adds = $this->mediatr->all($dto, fn(Add $add) => Add::with(['city', 'images','user.profile'])
             ->paginateWithFilters($dto)
         );
         return AddResponse::collection($adds);
