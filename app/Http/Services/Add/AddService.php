@@ -25,6 +25,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AddService
 {
+    private const CATEGORY_PHONE_ID = 1;
+    private const ACCESS_ID = 2;
+    private const DETAIL_ID = 3;
+
     private static array $relations = [
         'city_id' => [
             'entity' => City::class,
@@ -57,6 +61,16 @@ class AddService
             'callable' => ['filtration'],
         ]
     ];
+    private static array $defaultAggregate = [
+        self::ACCESS_ID => 'Аксессуар',
+        self::DETAIL_ID => 'Запчасть',
+    ];
+
+    private static function setAgreggateField(CreateAddDTO $dto, Add $add): Add
+    {
+        $add->aggregate = self::$defaultAggregate[$dto->category_id];
+        return $add;
+    }
 
     public static function create(CreateAddRequest $request, Add $add, CreateAddDTO $dto, $images): Add
     {
@@ -64,8 +78,13 @@ class AddService
         $add->updateRelations($dto, self::$relations);
         $user = Auth::user();
         $add->user()->associate($user);
-        $add->propagateFromDTO($dto)->save();
+        $add->propagateFromDTO($dto);
 
+        if ($dto->category_id != self::CATEGORY_PHONE_ID) {
+           $add = self::setAgreggateField($dto, $add);
+        }
+
+        $add->save();
         if (!empty($images)) {
             $webpName = [];
             foreach ($images as $image) {
