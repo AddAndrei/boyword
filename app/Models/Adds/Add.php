@@ -133,4 +133,36 @@ class Add extends BaseModel
     {
         return $query->where('aggregate', 'like', "%$value%");
     }
+
+    public function byCity(Builder $query, string $value): Builder
+    {
+        return $query->withWhereHas('city', function($q) use ($value) {
+            $q->where('title', $value);
+        });
+    }
+
+    public function byPrice(Builder $query, array $value): Builder
+    {
+        return $query->whereBetween('price', [$value[0], $value[1]]);
+    }
+
+    public function byMark(Builder $builder , int $value): Builder
+    {
+        return $builder->where('mark_id', $value);
+    }
+
+    public function byModel(Builder $builder, int $value): Builder
+    {
+        return $builder->where('model_id', $value);
+    }
+
+    public function byColor(Builder $builder, int $value): Builder
+    {
+        return $builder->where('color_id', $value);
+    }
+
+    public function byMemory(Builder $builder, int $value): Builder
+    {
+        return $builder->where('memory_id', $value);
+    }
 }
