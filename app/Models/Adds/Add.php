@@ -141,9 +141,19 @@ class Add extends BaseModel
         });
     }
 
-    public function byPrice(Builder $query, array $value): Builder
+    public function byPrices(Builder $query, string $value): Builder
     {
-        return $query->whereBetween('price', [$value[0], $value[1]]);
+        $prices = explode(",", $value);
+        return $query->whereBetween('price', [$prices[0], $prices[1]]);
+    }
+    public function byFrom(Builder $query, string $value): Builder
+    {
+        return $query->where('price', '>=', $value);
+    }
+
+    public function byTo(Builder $query, string $value): Builder
+    {
+        return $query->where('price', '<=', $value);
     }
 
     public function byMark(Builder $builder , int $value): Builder
