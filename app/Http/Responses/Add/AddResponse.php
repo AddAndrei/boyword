@@ -57,6 +57,9 @@ class AddResponse extends Response
             'category' => $this->relationLoaded('category')
                 ? CategoryResponse::make($this->category)
                 : null,
+            'views' => $this->relationLoaded('views')
+                ? $this->views()->count()
+                : null,
         ];
     }
 }
