@@ -84,7 +84,7 @@ class UserService
      */
     private function checkByPhone(string $phone): void
     {
-        if(User::where('phone', $phone)->exists()) {
+        if (User::where('phone', $phone)->exists()) {
             throw new UserExistedException($phone);
         }
     }
@@ -120,8 +120,8 @@ class UserService
      */
     public function verify(VerifyCodeDTO $dto): OkResponse|Response
     {
-        $code = Code::where([['phone', $dto->numberPhone], ['code' , $dto->code]])->first();
-        if($code){
+        $code = Code::where([['phone', $dto->numberPhone], ['code', $dto->code]])->first();
+        if ($code) {
             $code->delete();
             return OkResponse::make([]);
         }
@@ -134,8 +134,8 @@ class UserService
      */
     public function reset(ResetPasswordDTO $dto): OkResponse|Response
     {
-        $hasCode = Code::where([['phone', $dto->phone],['action', self::RESET]])->first();
-        if($hasCode && User::where('phone', $dto->phone)->exists()) {
+        $hasCode = Code::where([['phone', $dto->phone], ['action', self::RESET]])->first();
+        if ($hasCode && User::where('phone', $dto->phone)->exists()) {
             $user = User::where('phone', $dto->phone)->first();
             $user->password = bcrypt($dto->password);
             $user->save();

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Add\AddController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Balance\BalanceController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
 use App\Http\Controllers\Mark\MarkController;
@@ -45,7 +47,11 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
         'show',
     ]);*/
 
+    //profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/balance', [BalanceController::class, 'put']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
 
     //adds
     Route::delete('/adds', [AddController::class, 'destroy']);
