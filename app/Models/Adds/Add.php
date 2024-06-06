@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
@@ -43,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property User $user
  * @property Category $category
  * @property Image[]|Collection $images
+ * @property MorphMany $views
  */
 class Add extends BaseModel
 {
@@ -69,6 +71,10 @@ class Add extends BaseModel
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');
+    }
+    public function views(): MorphMany
+    {
+        return $this->morphMany(View::class, 'viewable');
     }
 
     public function mark(): BelongsTo

@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\Add;
 
+use App\Exceptions\Attachments\EntityNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\Adds\CreateAddDTO;
+use App\Http\DTO\Adds\GetAddDTO;
 use App\Http\DTO\Adds\UpdateAddDTO;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
 use App\Http\Requests\Adds\CreateAddRequest;
+use App\Http\Requests\Adds\GetAddRequest;
 use App\Http\Requests\Adds\UpdateAddRequest;
 use App\Http\Requests\PaginateWithFiltersRequest;
 use App\Http\Responses\Add\AddResponse;
 use App\Http\Services\Add\AddService;
+use App\Http\Services\Add\ViewService;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
 use App\Models\Adds\Add;
+use App\Models\Adds\View;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use Symfony\Component\Routing\Attribute\Route;
@@ -69,13 +74,24 @@ class AddController extends Controller
         return AddResponse::make($add);
     }
 
+    /**
+     * @param GetAddRequest $request
+     * @param int $id
+     * @return AddResponse
+     * @throws UnknownProperties
+     * @throws EntityNotFoundException
+     */
     #[Route('/api/adds/{id}', methods: ["GET"])]
-    public function show(int $id): AddResponse
+    public function show(GetAddRequest $request ,int $id): AddResponse
     {
-        $add = $this->mediatr->get('id', $id, function (Add $add) use ($id) {
-            return $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile','category', 'images'])
+        $dto = GetAddDTO::createFromRequest($request);
+        $add = $this->mediatr->get('id', $id, function (Add $add) use ($id, $dto) {
+            /**@var $res Add*/
+            $res = $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile','category', 'images', 'views'])
                 ->where('id', $id)
                 ->first();
+            ViewService::createView($dto, $res);
+            return $res;
         });
         return AddResponse::make($add);
     }
