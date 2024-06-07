@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::post('/balance', [BalanceController::class, 'put']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
+    Route::post('/profile/test', [ProfileController::class, 'test']);
 
     //adds
     Route::delete('/adds', [AddController::class, 'destroy']);
