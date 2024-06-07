@@ -87,7 +87,7 @@ class AddController extends Controller
         $dto = GetAddDTO::createFromRequest($request);
         $add = $this->mediatr->get('id', $id, function (Add $add) use ($id, $dto) {
             /**@var $res Add*/
-            $res = $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile','category', 'images', 'views'])
+            $res = $add::with(['city', 'mark', 'model', 'color', 'memory', 'user', 'user.profile.rating','category', 'images', 'views'])
                 ->where('id', $id)
                 ->first();
             ViewService::createView($dto, $res);
