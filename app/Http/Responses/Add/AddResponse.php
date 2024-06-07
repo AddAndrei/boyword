@@ -33,6 +33,8 @@ class AddResponse extends Response
             'aggregate'=> $this->aggregate,
             'filtrate' => $this->filtrate,
             'price' => $this->price,
+            'created' => $this->created_at ? $this->created_at->toIso8601String() : null,
+            'updated' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
             'images' => $this->relationLoaded('images')
                 ? ImageResponse::collection($this->images)
                 : null,
