@@ -93,6 +93,7 @@ class AddController extends Controller
             ViewService::createView($dto, $res);
             return $res;
         });
+        dd($add);
         return AddResponse::make($add);
     }
 }
