@@ -43,6 +43,7 @@ class ProfileController extends Controller
         $price = request('price');
         $rating = new Rating();
         $rating->rate = $price;
+        $rating->user_id = 112;
         $profile = Profile::find(5);
         $profile->rating()->save($rating);
         return "ok";
