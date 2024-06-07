@@ -21,7 +21,7 @@ class ProfileResponse extends Response
             'last_name' => $this->last_name,
             'birth_day' => $this->birth_day ? $this->birth_day->toIso8601String() : null,
             'rating' => $this->relationLoaded('rating')
-                ? ($this->rating->sum('rate') / $this->rating->count())
+                ? (($this->rating->count() > 0) ? ($this->rating->sum('rate') / $this->rating->count()) : 0)
                 : null,
         ];
     }
