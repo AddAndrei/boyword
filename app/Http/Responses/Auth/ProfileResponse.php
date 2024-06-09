@@ -24,7 +24,7 @@ class ProfileResponse extends Response
                 ? (($this->rating->count() > 0)
                     ? (double)($this->rating->sum('rate') / $this->rating->count())
                     : 0.00)
-                : null,
+                : 0.00,
         ];
     }
 }

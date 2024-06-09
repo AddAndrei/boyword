@@ -20,18 +20,20 @@ class ProfileApiResponse extends Response
             'name' => $this->name,
             'last_name' => $this->last_name,
             'birth_day' => $this->birth_day ? $this->birth_day->toIso8601String() : null,
-            'image' => $this->relationLoaded('image')
+            'image' => ($this->relationLoaded('image') && !is_null($this->image))
                 ? $this->image->url
                 : null,
             'rating' => $this->relationLoaded('rating')
-                ? ($this->rating->sum('rate') / $this->rating->count())
-                : null,
+                ? (($this->rating->count() > 0)
+                    ? (double)($this->rating->sum('rate') / $this->rating->count())
+                    : 0.00)
+                : 0.00,
             'reviews' => $this->relationLoaded('reviews')
                 ? $this->reviews->count()
-                : null,
+                : 0,
             'balance' => $this->relationLoaded('balance')
                 ? $this->balance->balance
-                : null,
+                : 0.00,
 
         ];
     }
