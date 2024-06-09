@@ -8,6 +8,7 @@ use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
 use App\Http\Controllers\Mark\MarkController;
 use App\Http\Controllers\Model\ModelController;
+use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\System\SystemController;
 use App\Http\Controllers\Volume\VolumeController;
 use App\Http\Controllers\YandexDisk\YandexDiskController;
@@ -49,6 +50,10 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
     //profile
     Route::get('/profile', [ProfileController::class, 'show']);
+    Route::get('/profile/{id}', [ProfileController::class, 'getProfile']);
+    Route::get('/reviews', [ReviewsController::class, 'get']);
+    Route::get('/reviews/{id}', [ReviewsController::class, 'getReviews']);
+
     Route::post('/balance', [BalanceController::class, 'put']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/profile/test', [ProfileController::class, 'test']);
