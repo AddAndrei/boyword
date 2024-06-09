@@ -31,7 +31,7 @@ class ProfileApiResponse extends Response
             'reviews' => $this->relationLoaded('reviews')
                 ? $this->reviews->count()
                 : 0,
-            'balance' => $this->relationLoaded('balance')
+            'balance' => ($this->relationLoaded('balance') && !is_null($this->balance))
                 ? $this->balance->balance
                 : 0.00,
 
