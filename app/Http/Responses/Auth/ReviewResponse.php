@@ -20,6 +20,9 @@ class ReviewResponse extends Response
             'id' => $this->getKey(),
             'text' => $this->review,
             'date' => $this->created_at ? $this->created_at->toIso8601String() : null,
+            'user' => $this->relationLoaded('user')
+                ? UserProfileResponse::make($this->user)
+                : null,
         ];
     }
 }

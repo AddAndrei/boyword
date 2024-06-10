@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Reviews;
 
 use App\Http\Controllers\Controller;
+use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
+use App\Http\Requests\PaginateWithFiltersRequest;
 use App\Http\Responses\Auth\ReviewResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
@@ -20,12 +22,13 @@ class ReviewsController extends Controller
     }
 
     #[Route('/api/reviews', methods: ["GET"])]
-    public function get(): AnonymousResourceCollection
+    public function get(PaginateWithFiltersRequest $request): AnonymousResourceCollection
     {
+        $dto = PaginateWithFiltersDTO::createFromRequest($request);
         $reviews = $this->mediatr->all(closure:  fn(Review $review)
-        => $review->where('reviewable_id', Auth::user()->profile->id)
-            ->orderBy('id', 'DESC')
-            ->get()
+        => $review->with(['user.profile'])
+            ->where('reviewable_id', Auth::user()->profile->id)
+            ->paginateWithFilters($dto)
         );
         return ReviewResponse::collection($reviews);
     }
