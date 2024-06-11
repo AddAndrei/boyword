@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Balance\BalanceController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
+use App\Http\Controllers\Favorite\FavoriteController;
 use App\Http\Controllers\Mark\MarkController;
 use App\Http\Controllers\Model\ModelController;
 use App\Http\Controllers\Reviews\ReviewsController;
@@ -57,6 +58,11 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::post('/balance', [BalanceController::class, 'put']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/profile/test', [ProfileController::class, 'test']);
+
+    //favorites
+    Route::get('/favorite/add/{id}', [FavoriteController::class, 'add']);
+    Route::get('/favorite/remove/{id}',[FavoriteController::class, 'remove']);
+    Route::get('/favorite', [FavoriteController::class, 'index']);
 
     //adds
     Route::delete('/adds', [AddController::class, 'destroy']);

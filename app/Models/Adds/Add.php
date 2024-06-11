@@ -45,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property Category $category
  * @property Image[]|Collection $images
  * @property MorphMany $views
+ * @property MorphMany $favorites
  */
 class Add extends BaseModel
 {
@@ -76,6 +77,12 @@ class Add extends BaseModel
     {
         return $this->morphMany(View::class, 'viewable');
     }
+
+    public function favorites(): MorphMany
+    {
+        return $this->morphMany(Favorite::class, 'favoriteable');
+    }
+
 
     public function mark(): BelongsTo
     {
