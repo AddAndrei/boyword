@@ -10,7 +10,7 @@ class ViewService
 {
     public static function createView(GetAddDTO $dto, Add $add): void
     {
-        if($dto->device_id && !View::where('device', $dto->device_id)->exists()) {
+        if($dto->device_id && !View::where([['device', $dto->device_id], ['viewable_id', $add->id]])->exists()) {
             /** @var $res Add*/
             $view = new View();
             $view->device = $dto->device_id;
