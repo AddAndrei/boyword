@@ -26,7 +26,7 @@ class FavoriteController extends Controller
     public function index(PaginateWithFiltersRequest $request): AnonymousResourceCollection
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
-        $adds = Favorite::with('add')->where('user_id', Auth::id())->paginateWithFilters($dto);
+        $adds = Favorite::with('add.images')->where('user_id', Auth::id())->paginateWithFilters($dto);
         return FavoriteAddsResponse::collection($adds);
     }
 
