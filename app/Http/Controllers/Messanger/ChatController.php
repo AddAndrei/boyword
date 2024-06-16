@@ -25,7 +25,7 @@ class ChatController extends Controller
     {
         $messages = $this->mediatr->all(closure: function (ChatRequest $chat){
             $chat = $chat::with(['chat.sender.image'])
-                ->where('receiver_id', 4)
+                ->where('receiver_id', Auth::user()->profile->id)
                 ->orderBy('created_at', 'DESC')
                 ->get()->unique('sender_id');
             $chat->load('unreadable');
