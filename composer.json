@@ -6,6 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "cboden/ratchet": "^0.4.4",
         "darkaonline/l5-swagger": "^8.6",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
@@ -13,9 +16,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "maatwebsite/excel": "^3.1",
-        "spatie/data-transfer-object": "^3.9",
-        "ext-curl": "*",
-        "ext-gd": "*"
+        "spatie/data-transfer-object": "^3.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

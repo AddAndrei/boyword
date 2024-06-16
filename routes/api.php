@@ -8,6 +8,7 @@ use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Color\ColorController;
 use App\Http\Controllers\Favorite\FavoriteController;
 use App\Http\Controllers\Mark\MarkController;
+use App\Http\Controllers\Messanger\ChatController;
 use App\Http\Controllers\Model\ModelController;
 use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\System\SystemController;
@@ -36,8 +37,13 @@ Route::post('/yandex', [YandexDiskController::class, 'index']);
 Route::get('/mm', [SystemController::class, 'showEntities']);
 
 
+
 Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
+    //chat
+    Route::get('/messages', [ChatController::class, 'index']);
+    Route::post('/messages/send', [ChatController::class, 'send']);
+    Route::get('/messages/user', [ChatController::class, 'messagesWithUser']);
     //users
     /*Route::post('/user/banned', [UserController::class, 'banned']);
     Route::post('/user/unbanned', [UserController::class, 'unbanned']);
@@ -63,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/favorite/add/{id}', [FavoriteController::class, 'add']);
     Route::get('/favorite/remove/{id}',[FavoriteController::class, 'remove']);
     Route::get('/favorite', [FavoriteController::class, 'index']);
+
+
 
     //adds
     Route::delete('/adds', [AddController::class, 'destroy']);

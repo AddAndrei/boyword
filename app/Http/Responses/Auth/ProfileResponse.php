@@ -25,6 +25,9 @@ class ProfileResponse extends Response
                     ? (double)($this->rating->sum('rate') / $this->rating->count())
                     : 0.00)
                 : 0.00,
+            'image' => ($this->relationLoaded('image') && !is_null($this->image))
+                ? $this->image->url
+                : null,
         ];
     }
 }
