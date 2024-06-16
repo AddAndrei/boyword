@@ -19,11 +19,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property Carbon|null $birth_day
  * @property int|null $image_id
  * @property int $user_id
+ * @property int|null $connection_id
+ * @property string|null $token
+ * @property boolean $online
+ *
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property MorphMany|Rating[] $rating
  * @property MorphMany|Review[] $reviews
- *
  * @property Image $image
  * @property User $user
  * @property Balance $balance
@@ -35,6 +38,8 @@ class Profile extends BaseModel
     protected $fillable = [
         'name',
         'last_name',
+        'connection_id',
+        'token',
     ];
 
     protected $dates = [
