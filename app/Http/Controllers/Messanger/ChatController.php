@@ -51,10 +51,10 @@ class ChatController extends Controller
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
         $messages = $this->chatMediatr->all(closure: function(Chat $chat) use ($id, $dto) {
-            return $chat::with(['sender', 'receiver'])
+            return $chat::with(['sender.image', 'receiver.image'])
                 ->where('chat_request_id', $id)
                 ->paginateWithFilters($dto);
-                
+
         });
         return DialogResponse::collection($messages);
     }
