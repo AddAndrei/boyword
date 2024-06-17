@@ -2,11 +2,13 @@
 
 namespace App\Http\Responses\Message;
 
+use App\Http\Responses\Auth\ProfileResponse;
 use App\Http\Responses\Response;
+use App\Models\Message\Chat;
 use App\Models\Message\ChatRequest;
 use Illuminate\Http\Request;
 
-class MessageResponse extends Response
+class DialogResponse extends Response
 {
     /**
      * @param Request $request
@@ -14,21 +16,17 @@ class MessageResponse extends Response
      */
     public function toArray($request): array
     {
-        /** @var ChatRequest $this */
+        /** @var Chat $this */
         return [
             'id' => $this->getKey(),
             'sender' => $this->relationLoaded('sender')
-                ? $this->sender->id
+                ? ProfileResponse::make($this->sender)
                 : null,
             'receiver' => $this->relationLoaded('receiver')
-                ? $this->receiver->id
+                ? ProfileResponse::make($this->receiver)
                 : null,
-            'chat' => $this->relationLoaded('chat')
-                ? ChatResponse::make($this->chat)
-                : null,
-            'unreadable' => $this->relationLoaded('unreadable')
-                ? $this->unreadable()->count()
-                : null,
+            'message' => $this->message,
+            'readable' => $this->readable,
         ];
     }
 }
