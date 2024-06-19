@@ -28,6 +28,7 @@ class ProfileResponse extends Response
             'image' => ($this->relationLoaded('image') && !is_null($this->image))
                 ? $this->image->url
                 : null,
+            'online' => $this->online,
         ];
     }
 }
