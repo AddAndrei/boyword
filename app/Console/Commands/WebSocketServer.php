@@ -15,7 +15,7 @@ class WebSocketServer extends Command
      *
      * @var string
      */
-    protected $signature = 'websocket:init';
+    protected $signature = 'websocket:init {server}';
 
     /**
      * The console command description.
@@ -27,7 +27,7 @@ class WebSocketServer extends Command
 
     public function handle(): void
     {
-        $this->info('server start');
+        $command = $this->argument('server');
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
@@ -36,6 +36,12 @@ class WebSocketServer extends Command
             ),
             8080
         );
-        $server->run();
+        if($command == 'start'){
+            $this->info('server start');
+            $server->run();
+        }else{
+            $this->info('server stop');
+            $server->loop->stop();
+        }
     }
 }

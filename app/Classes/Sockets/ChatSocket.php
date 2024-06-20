@@ -139,7 +139,7 @@ class ChatSocket extends BaseSocket
 
                 $chat->message = $data->message;
 
-                $chat->readable = true;
+                $chat->readable = false;
 
                 $chat->chat_request_id = $data->request_chat_id;
 
