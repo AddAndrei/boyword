@@ -26,13 +26,14 @@ class ChatSocket extends BaseSocket
     {
         $this->clients->attach($conn);
         $queryString = $conn->httpRequest->getUri()->getQuery();
-        parse_str($queryString, $queryArray);
 
-        if(isset($queryarray['token']))
+        $queryArray = explode('=', urldecode($queryString));
+
+        if(!empty($queryArray))
         {
-            Profile::where('token', $queryArray['token'])->update([ 'connection_id' => $conn->resourceId, 'user_status' => 'Online' ]);
+            Profile::where('token', $queryArray[1])->update([ 'connection_id' => $conn->resourceId, 'online' => true ]);
 
-            $user_id = Profile::select('id')->where('token', $queryArray['token'])->get();
+            $user_id = Profile::select('id')->where('token', $queryArray[1])->get();
 
             $data['id'] = $user_id[0]->id;
 
