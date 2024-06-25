@@ -24,7 +24,7 @@
 
     </body>
     <script>
-        let socket = new WebSocket('ws://80.90.191.17:8080');
+        let socket = new WebSocket('ws://80.90.191.17:8080/?token=bcf9fbc258763848353d87c72bf86eaf1b6cfda1d3ae186fdb4969228ad4b021');
         socket.onopen = function (e) {
             console.log("open");
         }
@@ -36,9 +36,9 @@
             let data = {
                 "id":1,
                 "message":msg,
-                "from_user_id":7,
-                "to_user_id":5,
-                "request_chat_id":2,
+                "from_user_id":5,
+                "to_user_id":3,
+                "request_chat_id":3,
                 "type":"request_send_message"
             };
             socket.send(
