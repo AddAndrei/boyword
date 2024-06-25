@@ -24,7 +24,7 @@
 
     </body>
     <script>
-        let socket = new WebSocket('ws://localhost:8080');
+        let socket = new WebSocket('ws://80.90.191.17:8080');
         socket.onopen = function (e) {
             console.log("open");
         }
@@ -33,8 +33,37 @@
         }
         function send(msg)
         {
-            let data = "test";
-            socket.send(msg);
+            let data = {
+                "id":1,
+                "message":msg,
+                "from_user_id":7,
+                "to_user_id":5,
+                "request_chat_id":2,
+                "type":"request_send_message"
+            };
+            socket.send(
+                JSON.stringify(data),
+                (error) => console.log(error)
+            );
         }
     </script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

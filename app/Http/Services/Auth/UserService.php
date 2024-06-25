@@ -63,6 +63,7 @@ class UserService
         $user = User::where('phone', $dto->phone)->first();
         if ($user && Hash::check($dto->password, $user->password)) {
             $user->token = $user->createToken('appToken')->plainTextToken;
+            $user->profile->token = $user->token;
             return $user;
         }
         throw new InvalidPasswordException();
