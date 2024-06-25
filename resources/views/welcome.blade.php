@@ -24,7 +24,7 @@
 
     </body>
     <script>
-        let socket = new WebSocket('ws://80.90.191.17:8080/?token=bcf9fbc258763848353d87c72bf86eaf1b6cfda1d3ae186fdb4969228ad4b021');
+        let socket = new WebSocket('ws://127.0.0.1:8080/?token=52|zrue4LZPgWDwJaZeAB3IJYKlURRtzDtE2CSCkZp658634e9a');
         socket.onopen = function (e) {
             console.log("open");
         }
