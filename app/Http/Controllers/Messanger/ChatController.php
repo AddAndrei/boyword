@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Messanger;
 
+use App\Exceptions\Attachments\EntityNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
 use App\Http\Requests\PaginateWithFiltersRequest;
 use App\Http\Responses\Message\DialogResponse;
+use App\Http\Responses\Message\DialogUsersResponse;
 use App\Http\Responses\Message\MessageResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
@@ -20,6 +22,7 @@ class ChatController extends Controller
 {
     private EntityMediatr $mediatr;
     private EntityMediatr $chatMediatr;
+
     public function __construct()
     {
         $this->mediatr = new EntityMediatr(new ChatRequest(), new Service());
@@ -29,7 +32,7 @@ class ChatController extends Controller
     #[Route('/api/messages', methods: ["GET"])]
     public function index(): AnonymousResourceCollection
     {
-        $messages = $this->mediatr->all(closure: function (ChatRequest $chat){
+        $messages = $this->mediatr->all(closure: function (ChatRequest $chat) {
             $chat = $chat::with(['chat.sender.image', 'sender', 'receiver'])
                 ->where('receiver_id', Auth::user()->profile->id)
                 ->orWhere('sender_id', Auth::user()->profile->id)
@@ -51,7 +54,7 @@ class ChatController extends Controller
     public function dialog(PaginateWithFiltersRequest $request, int $id): AnonymousResourceCollection
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
-        $messages = $this->chatMediatr->all(closure: function(Chat $chat) use ($id, $dto) {
+        $messages = $this->chatMediatr->all(closure: function (Chat $chat) use ($id, $dto) {
             return $chat::with(['sender.image', 'receiver.image'])
                 ->where('chat_request_id', $id)
                 ->paginateWithFilters($dto);
@@ -60,4 +63,17 @@ class ChatController extends Controller
         return DialogResponse::collection($messages);
     }
 
+    /**
+     * @param int $id
+     * @return DialogUsersResponse
+     * @throws EntityNotFoundException
+     */
+    #[Route('/api/message/users/{id}', methods: ["GET"])]
+    public function users(int $id): DialogUsersResponse
+    {
+        $users = $this->mediatr->get('id', $id, closure: function (ChatRequest $chatRequest) {
+            return $chatRequest::with(['sender.image', 'receiver.image'])->first();
+        });
+        return DialogUsersResponse::make($users);
+    }
 }

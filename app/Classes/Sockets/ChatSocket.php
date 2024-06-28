@@ -52,7 +52,7 @@ class ChatSocket extends BaseSocket
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
-        if(preg_match('~[^\x20-\x7E\t\r\n]~', $msg) > 0) {
+        /*if(preg_match('~[^\x20-\x7E\t\r\n]~', $msg) > 0) {
             $image_name = time() . '.jpg';
             file_put_contents(public_path('/images') . $image_name, $msg);
 
@@ -65,7 +65,7 @@ class ChatSocket extends BaseSocket
                     $client->send(json_encode($send_data));
                 }
             }
-        }
+        }*/
 
         $data = json_decode($msg);
         if(isset($data->type)) {
