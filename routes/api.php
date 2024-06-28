@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/messages', [ChatController::class, 'index']);
     Route::post('/messages/send', [ChatController::class, 'send']);
     Route::get('/messages/{id}', [ChatController::class, 'dialog']);
-
+    Route::get('/messages/users/{id}', [ChatController::class, 'users']);
     //users
     /*Route::post('/user/banned', [UserController::class, 'banned']);
     Route::post('/user/unbanned', [UserController::class, 'unbanned']);
