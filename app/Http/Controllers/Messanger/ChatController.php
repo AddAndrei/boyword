@@ -71,8 +71,8 @@ class ChatController extends Controller
     #[Route('/api/message/users/{id}', methods: ["GET"])]
     public function users(int $id): DialogUsersResponse
     {
-        $users = $this->mediatr->get('id', $id, closure: function (ChatRequest $chatRequest) {
-            return $chatRequest::with(['sender.image', 'receiver.image'])->first();
+        $users = $this->mediatr->get('id', $id, closure: function (ChatRequest $chatRequest) use($id) {
+            return $chatRequest::with(['sender.image', 'receiver.image'])->where('id', $id)->firstOrFail();
         });
         return DialogUsersResponse::make($users);
     }
