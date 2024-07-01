@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses\Message;
 
+use App\Http\Responses\Auth\ProfileResponse;
 use App\Http\Responses\Response;
 use App\Models\Message\ChatRequest;
 use Illuminate\Http\Request;
@@ -18,10 +19,10 @@ class MessageResponse extends Response
         return [
             'id' => $this->getKey(),
             'sender' => $this->relationLoaded('sender')
-                ? $this->sender->id
+                ? ProfileResponse::make($this->sender)
                 : null,
             'receiver' => $this->relationLoaded('receiver')
-                ? $this->receiver->id
+                ? ProfileResponse::make($this->receiver)
                 : null,
             'chat' => $this->relationLoaded('chat')
                 ? ChatResponse::make($this->chat)
