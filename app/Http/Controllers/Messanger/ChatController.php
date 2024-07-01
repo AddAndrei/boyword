@@ -33,7 +33,7 @@ class ChatController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $messages = $this->mediatr->all(closure: function (ChatRequest $chat) {
-            $chat = $chat::with(['chat.sender.image', 'chat.receiver.image', 'sender', 'receiver'])
+            $chat = $chat::with(['chat.sender', 'chat.receiver', 'sender.image', 'receiver.image'])
                 ->where('receiver_id', Auth::user()->profile->id)
                 ->orWhere('sender_id', Auth::user()->profile->id)
                 ->orderBy('created_at', 'DESC')
