@@ -6,11 +6,13 @@ use App\Exceptions\Attachments\EntityNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
 use App\Http\Requests\PaginateWithFiltersRequest;
+use App\Http\Responses\Message\ChatRequestResponse;
 use App\Http\Responses\Message\DialogResponse;
 use App\Http\Responses\Message\DialogUsersResponse;
 use App\Http\Responses\Message\MessageResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
+use App\Models\Auth\Profile;
 use App\Models\Message\Chat;
 use App\Models\Message\ChatRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -75,5 +77,18 @@ class ChatController extends Controller
             return $chatRequest::with(['sender.image', 'receiver.image'])->where('id', $id)->firstOrFail();
         });
         return DialogUsersResponse::make($users);
+    }
+
+    #[Route('/api/message/chat/create/{id}', methods: ["POST"])]
+    public function create(int $id): ChatRequestResponse
+    {
+        /** @var $chat ChatRequest */
+        $chat = $this->mediatr->store(closure: function (ChatRequest $chatRequest) use ($id) {
+           $chatRequest->sender()->associate(Auth::user()->profile);
+           $receiver = Profile::find($id);
+           $chatRequest->receiver()->associate($receiver);
+           return $chatRequest;
+        });
+        return ChatRequestResponse::make($chat)->created();
     }
 }
