@@ -70,24 +70,32 @@ class ChatController extends Controller
      * @return DialogUsersResponse
      * @throws EntityNotFoundException
      */
-    #[Route('/api/message/users/{id}', methods: ["GET"])]
+    #[Route('/api/messages/users/{id}', methods: ["GET"])]
     public function users(int $id): DialogUsersResponse
     {
-        $users = $this->mediatr->get('id', $id, closure: function (ChatRequest $chatRequest) use($id) {
+        $users = $this->mediatr->get('id', $id, closure: function (ChatRequest $chatRequest) use ($id) {
             return $chatRequest::with(['sender.image', 'receiver.image'])->where('id', $id)->firstOrFail();
         });
         return DialogUsersResponse::make($users);
     }
 
-    #[Route('/api/message/chat/create/{id}', methods: ["POST"])]
+    #[Route('/api/messages/chat/create/{id}', methods: ["POST"])]
     public function create(int $id): ChatRequestResponse
     {
         /** @var $chat ChatRequest */
         $chat = $this->mediatr->store(closure: function (ChatRequest $chatRequest) use ($id) {
-           $chatRequest->sender()->associate(Auth::user()->profile);
-           $receiver = Profile::find($id);
-           $chatRequest->receiver()->associate($receiver);
-           return $chatRequest;
+            if (
+                ChatRequest::where([['sender_id', Auth::user()->profile->id], ['receiver_id', $id]])->exists()
+                || ChatRequest::where([['sender_id', $id], ['receiver_id', Auth::user()->profile->id]])->exists()
+            ) {
+                return $chatRequest::where([['sender_id', Auth::user()->profile->id], ['receiver_id', $id]])
+                    ->orWhere([['sender_id', $id], ['receiver_id', Auth::user()->profile->id]])
+                    ->first();
+            }
+            $chatRequest->sender()->associate(Auth::user()->profile);
+            $receiver = Profile::find($id);
+            $chatRequest->receiver()->associate($receiver);
+            return $chatRequest;
         });
         return ChatRequestResponse::make($chat)->created();
     }
