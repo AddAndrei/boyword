@@ -6,6 +6,7 @@ use App\Classes\Sockets\Base\BaseSocket;
 use App\Models\Auth\Profile;
 use App\Models\Message\Chat;
 use App\Models\Message\ChatRequest;
+use Illuminate\Support\Facades\Log;
 use Ratchet\ConnectionInterface;
 use SplObjectStorage;
 
