@@ -26,7 +26,7 @@ class ReviewsController extends Controller
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
         $reviews = $this->mediatr->all(closure:  fn(Review $review)
-        => $review->with(['user.profile'])
+        => $review->with(['user.profile.image'])
             ->where('reviewable_id', Auth::user()->profile->id)
             ->paginateWithFilters($dto)
         );
