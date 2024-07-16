@@ -13,6 +13,7 @@ use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
 use App\Models\Auth\Rating;
 use App\Models\Reviews\Review;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
@@ -80,9 +81,11 @@ class ReviewsController extends Controller
     public function getReviews(PaginateWithFiltersRequest $request, int $id): AnonymousResourceCollection
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
+        /** @var User $user */
+        $user = User::find($id)->with('profile');
         $reviews = $this->mediatr->all(
             closure: fn(Review $review) => $review->with(['user.profile.image'])
-                ->where('reviewable_id', $id)
+                ->where('reviewable_id', $user->profile->id)
                 ->paginateWithFilters($dto)
         );
         return ReviewResponse::collection($reviews);
