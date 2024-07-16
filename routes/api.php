@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/profile/{id}', [ProfileController::class, 'getProfile']);
     Route::get('/reviews', [ReviewsController::class, 'get']);
     Route::get('/reviews/{id}', [ReviewsController::class, 'getReviews']);
+    Route::post('/reviews', [ReviewsController::class, 'store']);
 
     Route::post('/balance', [BalanceController::class, 'put']);
     Route::post('/logout', [AuthController::class, 'logout']);

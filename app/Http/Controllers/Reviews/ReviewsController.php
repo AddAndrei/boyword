@@ -4,15 +4,20 @@ namespace App\Http\Controllers\Reviews;
 
 use App\Http\Controllers\Controller;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
+use App\Http\DTO\Review\CreateReviewDTO;
 use App\Http\Requests\PaginateWithFiltersRequest;
+use App\Http\Requests\Reviews\CreateReviewRequest;
 use App\Http\Responses\Auth\ReviewResponse;
+use App\Http\Responses\OkResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
+use App\Models\Auth\Rating;
 use App\Models\Reviews\Review;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Exceptions\AnotherExceptions\RateReviewException;
 
 class ReviewsController extends Controller
 {
@@ -20,6 +25,31 @@ class ReviewsController extends Controller
     public function __construct()
     {
         $this->mediatr = new EntityMediatr(new Review(), new Service());
+    }
+
+    /**
+     * @param CreateReviewRequest $request
+     * @return OkResponse
+     * @throws UnknownProperties
+     * @throws RateReviewException
+     */
+    #[Route('/api/review', methods: ["POST"])]
+    public function store(CreateReviewRequest $request): OkResponse
+    {
+        $dto = CreateReviewDTO::createFromRequest($request);
+        $review = new Review();
+        $review->review = $dto->review;
+        $review->user_id = Auth::id();
+        Auth::user()->profile->reviews()->save($review);
+        if (($dto->rate && $dto->rate > 0 && $dto->rate <= 5)) {
+            $rating = new Rating();
+            $rating->rate = $dto->rate;
+            $rating->user_id = Auth::id();
+            Auth::user()->profile->rating()->save($rating);
+        }else{
+            throw new RateReviewException();
+        }
+        return OkResponse::make([])->created();
     }
 
     /**
