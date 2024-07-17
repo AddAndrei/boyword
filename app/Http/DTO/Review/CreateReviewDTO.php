@@ -8,4 +8,5 @@ class CreateReviewDTO extends DTO
 {
     public ?int $rate;
     public string $review;
+    public int $profile_id;
 }
