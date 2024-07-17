@@ -12,6 +12,7 @@ class CreateReviewRequest extends FormRequest
             [
                 'rate',
                 'review',
+                'profile_id',
             ]
         );
     }
@@ -21,6 +22,7 @@ class CreateReviewRequest extends FormRequest
         return [
             'rate' => 'integer|nullable',
             'review' => 'string|required',
+            'profile_id' => 'integer|required',
         ];
     }
 }

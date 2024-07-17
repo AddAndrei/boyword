@@ -11,6 +11,7 @@ use App\Http\Responses\Auth\ReviewResponse;
 use App\Http\Responses\OkResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
+use App\Models\Auth\Profile;
 use App\Models\Auth\Rating;
 use App\Models\Reviews\Review;
 use App\Models\User;
@@ -38,17 +39,20 @@ class ReviewsController extends Controller
     public function store(CreateReviewRequest $request): OkResponse
     {
         $dto = CreateReviewDTO::createFromRequest($request);
+        $profile = Profile::find($dto->profile_id);
         $review = new Review();
         $review->review = $dto->review;
         $review->user_id = Auth::id();
-        Auth::user()->profile->reviews()->save($review);
-        if (($dto->rate && $dto->rate > 0 && $dto->rate <= 5)) {
-            $rating = new Rating();
-            $rating->rate = $dto->rate;
-            $rating->user_id = Auth::id();
-            Auth::user()->profile->rating()->save($rating);
-        }else{
-            throw new RateReviewException();
+        $profile->reviews()->save($review);
+        if($dto->rate) {
+            if ($dto->rate > 0 && $dto->rate <= 5) {
+                $rating = new Rating();
+                $rating->rate = $dto->rate;
+                $rating->user_id = Auth::id();
+                $profile->rating()->save($rating);
+            }else{
+                throw new RateReviewException();
+            }
         }
         return OkResponse::make([])->created();
     }
