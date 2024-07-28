@@ -73,6 +73,7 @@ class ReviewsController extends Controller
     /**
      * @param PaginateWithFiltersRequest $request
      * @param int $id
+     *
      * @return AnonymousResourceCollection
      * @throws UnknownProperties
      */
