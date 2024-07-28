@@ -4,6 +4,7 @@ namespace App\Classes\Sockets;
 
 use App\Classes\Sockets\Base\BaseSocket;
 use App\Models\Auth\Profile;
+use App\Models\Connection\Connection;
 use App\Models\Message\Chat;
 use App\Models\Message\ChatRequest;
 use Illuminate\Support\Facades\Log;
@@ -32,10 +33,15 @@ class ChatSocket extends BaseSocket
 
         if(!empty($queryArray))
         {
-            Profile::where('token', $queryArray[1])->update([ 'connection_id' => $conn->resourceId, 'online' => true ]);
 
-            $user_id = Profile::select('id')->where('token', $queryArray[1])->get();
 
+            Profile::where('id', $queryArray[1])->update(['online' => true ]);
+
+            $user_id = Profile::select('id')->where('id', $queryArray[1])->get();
+            $connection = new Connection();
+            $connection->connection_id = $conn->resourceId;
+            $connection->profile_id = $user_id[0]->id;
+            $connection->save();
             $data['id'] = $user_id[0]->id;
 
             $data['status'] = 'Online';
@@ -108,8 +114,8 @@ class ChatSocket extends BaseSocket
                 $chat_request->status = 'Pending';
                 $chat_request->save();
 
-                $sender_connection_id = Profile::select('connection_id')->where('id', $data->from_user_id)->get();
-                $receiver_connection_id = Profile::select('connection_id')->where('id', $data->to_user_id)->get();
+                $sender_connection_id = Connection::select('connection_id')->where('profile_id', $data->from_user_id)->get();//Profile::select('connection_id')->where('id', $data->from_user_id)->get();
+                $receiver_connection_id = Connection::select('connection_id')->where('profile_id', $data->to_user_id)->get();
                 foreach ($this->clients as $client) {
                     if($client->resourceId == $sender_connection_id[0]->connection_id)
                     {
@@ -149,13 +155,34 @@ class ChatSocket extends BaseSocket
 
                 $chat_message_id = $chat->id;
 
-                $receiver_connection_id = Profile::select('connection_id')->where('id', $data->to_user_id)->get();
+                $receiver_connection_id = Connection::select('connection_id')->where('profile_id', $data->to_user_id)->get();
 
-                $sender_connection_id = Profile::select('connection_id')->where('id', $data->from_user_id)->get();
+                $sender_connection_id = Connection::select('connection_id')->where('profile_id', $data->from_user_id)->get();
 
                 foreach($this->clients as $client)
                 {
-                    if($client->resourceId == $receiver_connection_id[0]->connection_id || $client->resourceId == $sender_connection_id[0]->connection_id)
+                    foreach ($receiver_connection_id as $item) {
+                        if($client->resourceId == $item->connection_id) {
+                            $send_data['chat_message_id'] = $chat_message_id;
+                            $send_data['message'] = $data->message;
+                            $send_data['from_user_id'] = $data->from_user_id;
+                            $send_data['to_user_id'] = $data->to_user_id;
+                            Chat::where('id', $chat_message_id)->update(['readable' => true]);
+                            $send_data['message_status'] = 'Send';
+                            $client->send(json_encode($send_data));
+                        }
+                    }
+                    foreach ($sender_connection_id as $sender) {
+                        if($client->resourceId === $sender->connection_id) {
+                            $send_data['chat_message_id'] = $chat_message_id;
+                            $send_data['message'] = $data->message;
+                            $send_data['from_user_id'] = $data->from_user_id;
+                            $send_data['to_user_id'] = $data->to_user_id;
+                            $send_data['message_status'] = 'Not Send';
+                            $client->send(json_encode($send_data));
+                        }
+                    }
+                    /*if($client->resourceId == $receiver_connection_id[0]->connection_id || $client->resourceId == $sender_connection_id[0]->connection_id)
                     {
                         $send_data['chat_message_id'] = $chat_message_id;
 
@@ -177,7 +204,7 @@ class ChatSocket extends BaseSocket
                         }
 
                         $client->send(json_encode($send_data));
-                    }
+                    }*/
                 }
             }
 
@@ -194,9 +221,9 @@ class ChatSocket extends BaseSocket
 
         if(isset($queryarray['token']))
         {
-            Profile::where('token', $queryarray['token'])->update([ 'connection_id' => 0, 'online' => false ]);
-
-            $user_id = Profile::select('id', 'updated_at')->where('token', $queryarray['token'])->get();
+            Profile::where('id', $queryarray['token'])->update(['connection_id' => 0, 'online' => false ]);
+            Connection::where(['profile_id', $queryarray['token']])->delete();
+            $user_id = Profile::select('id', 'updated_at')->where('id', $queryarray['token'])->get();
 
             $data['id'] = $user_id[0]->id;
 
