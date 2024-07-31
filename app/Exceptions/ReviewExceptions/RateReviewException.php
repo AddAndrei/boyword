@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\AnotherExceptions;
+namespace App\Exceptions\ReviewExceptions;
 
 use App\Exceptions\GeneralJsonException;
 

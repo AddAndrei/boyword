@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Reviews;
 
+use App\Exceptions\ReviewExceptions\RateReviewException;
+use App\Exceptions\ReviewExceptions\ReviewExistedException;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\PaginateWithFiltersSorintg\PaginateWithFiltersDTO;
 use App\Http\DTO\Review\CreateReviewDTO;
@@ -10,50 +12,37 @@ use App\Http\Requests\Reviews\CreateReviewRequest;
 use App\Http\Responses\Auth\ReviewResponse;
 use App\Http\Responses\OkResponse;
 use App\Http\Services\EntityMediatr;
+use App\Http\Services\Review\ReviewService;
 use App\Http\Services\Service;
-use App\Models\Auth\Profile;
-use App\Models\Auth\Rating;
 use App\Models\Reviews\Review;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Exceptions\AnotherExceptions\RateReviewException;
 
 class ReviewsController extends Controller
 {
     private EntityMediatr $mediatr;
-    public function __construct()
+    private ReviewService $service;
+    public function __construct(ReviewService $reviewService)
     {
         $this->mediatr = new EntityMediatr(new Review(), new Service());
+        $this->service = $reviewService;
     }
 
     /**
      * @param CreateReviewRequest $request
      * @return OkResponse
-     * @throws UnknownProperties
      * @throws RateReviewException
+     * @throws UnknownProperties
+     * @throws ReviewExistedException
      */
     #[Route('/api/review', methods: ["POST"])]
     public function store(CreateReviewRequest $request): OkResponse
     {
         $dto = CreateReviewDTO::createFromRequest($request);
-        $profile = Profile::find($dto->profile_id);
-        $review = new Review();
-        $review->review = $dto->review;
-        $review->user_id = Auth::id();
-        $profile->reviews()->save($review);
-        if($dto->rate) {
-            if ($dto->rate > 0 && $dto->rate <= 5) {
-                $rating = new Rating();
-                $rating->rate = $dto->rate;
-                $rating->user_id = Auth::id();
-                $profile->rating()->save($rating);
-            }else{
-                throw new RateReviewException();
-            }
-        }
+        $this->service->create($dto);
         return OkResponse::make([])->created();
     }
 

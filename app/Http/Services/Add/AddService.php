@@ -3,6 +3,7 @@
 namespace App\Http\Services\Add;
 
 use App\Api\YandexDisk;
+use App\Exceptions\AddsExceptions\PriceSubZeroException;
 use App\Http\DTO\Adds\CreateAddDTO;
 use App\Http\DTO\Adds\UpdateAddDTO;
 use App\Http\Requests\Adds\CreateAddRequest;
@@ -74,6 +75,9 @@ class AddService
 
     public static function create(CreateAddRequest $request, Add $add, CreateAddDTO $dto, $images): Add
     {
+        if ((int)$dto->price < 0) {
+            throw new PriceSubZeroException();
+        }
         $dto = self::createCity($dto, $request->get('city'));
         $add->updateRelations($dto, self::$relations);
         $user = Auth::user();
@@ -81,7 +85,7 @@ class AddService
         $add->propagateFromDTO($dto);
 
         if ($dto->category_id != self::CATEGORY_PHONE_ID) {
-           $add = self::setAgreggateField($dto, $add);
+            $add = self::setAgreggateField($dto, $add);
         }
 
         $add->save();
@@ -104,7 +108,7 @@ class AddService
             }
 
             //UploadImageToDiskJob::dispatch(new YandexDisk(), $images, $add->id, $user->id);
-        }else{
+        } else {
             Log::error('not images', [$images]);
         }
 
