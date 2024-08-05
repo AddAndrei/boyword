@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->createCategories();
         $this->createMarksAndModels();
-
          //\App\Models\User::factory(100)->create();
 
         // \App\Models\User::factory()->create([
