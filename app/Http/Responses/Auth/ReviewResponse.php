@@ -23,6 +23,7 @@ class ReviewResponse extends Response
             'user' => $this->relationLoaded('user')
                 ? UserProfileResponse::make($this->user)
                 : null,
+            'rate' => $this->rate,
         ];
     }
 }

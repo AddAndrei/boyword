@@ -23,7 +23,7 @@ class ReviewService
         $review->user_id = Auth::id();
         $profile->reviews()->save($review);
         if ($dto->rate) {
-            if ($dto->rate > 0 && $dto->rate <= 5) {
+            if ($dto->rate > 1 && $dto->rate <= 5) {
                 $rating = new Rating();
                 $rating->rate = $dto->rate;
                 $rating->user_id = Auth::id();
