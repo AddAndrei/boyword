@@ -3,6 +3,7 @@
 namespace App\Models\Reviews;
 
 use App\Models\Auth\Profile;
+use App\Models\Auth\Rating;
 use App\Models\BaseModel;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property User $user
+ * @property int|null $rate
  */
 class Review extends BaseModel
 {
@@ -28,6 +30,8 @@ class Review extends BaseModel
         'review',
     ];
 
+    public ?int $rate;
+
     public function reviewable(): MorphTo
     {
         return $this->morphTo();
@@ -36,5 +40,10 @@ class Review extends BaseModel
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function getRateAttribute(Rating $rating): void
+    {
+        $this->rate = $rating->rate;
     }
 }

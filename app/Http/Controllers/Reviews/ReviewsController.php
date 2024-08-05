@@ -14,6 +14,7 @@ use App\Http\Responses\OkResponse;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Review\ReviewService;
 use App\Http\Services\Service;
+use App\Models\Auth\Rating;
 use App\Models\Reviews\Review;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -60,6 +61,11 @@ class ReviewsController extends Controller
             ->where('reviewable_id', Auth::user()->profile->id)
             ->paginateWithFilters($dto)
         );
+        foreach ($reviews as $review) {
+            /** @var $review Review */
+            $rating = Rating::where([['profileable_id', $review->reviewable_id], ['user_id', $review->user_id]])->first();
+            $review->getRateAttribute($rating);
+        }
         return ReviewResponse::collection($reviews);
     }
 
