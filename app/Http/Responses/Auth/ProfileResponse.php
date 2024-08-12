@@ -29,6 +29,7 @@ class ProfileResponse extends Response
                 ? $this->image->url
                 : null,
             'online' => $this->online,
+            'userId' => $this->user_id,
         ];
     }
 }
