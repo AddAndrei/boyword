@@ -30,8 +30,6 @@ class Review extends BaseModel
         'review',
     ];
 
-    public ?int $rate;
-
     public function reviewable(): MorphTo
     {
         return $this->morphTo();
@@ -42,8 +40,4 @@ class Review extends BaseModel
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function getRateAttribute(Rating $rating): void
-    {
-        $this->rate = $rating->rate;
-    }
 }

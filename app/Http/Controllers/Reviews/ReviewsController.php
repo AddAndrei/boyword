@@ -61,11 +61,7 @@ class ReviewsController extends Controller
             ->where('reviewable_id', Auth::user()->profile->id)
             ->paginateWithFilters($dto)
         );
-        foreach ($reviews as $review) {
-            /** @var $review Review */
-            $rating = Rating::where([['profileable_id', $review->reviewable_id], ['user_id', $review->user_id]])->first();
-            $review->getRateAttribute($rating);
-        }
+
         return ReviewResponse::collection($reviews);
     }
 
@@ -88,11 +84,6 @@ class ReviewsController extends Controller
                 ->where('reviewable_id', $user->profile->id)
                 ->paginateWithFilters($dto)
         );
-        foreach ($reviews as $review) {
-            /** @var $review Review */
-            $rating = Rating::where([['profileable_id', $review->reviewable_id], ['user_id', $review->user_id]])->first();
-            $review->getRateAttribute($rating);
-        }
         return ReviewResponse::collection($reviews);
     }
 }
