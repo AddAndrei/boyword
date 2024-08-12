@@ -20,6 +20,7 @@ class ReviewService
         $profile = Profile::find($dto->profile_id);
         $review = new Review();
         $review->review = $dto->review;
+        $review->rate = $dto->rate;
         $review->user_id = Auth::id();
         $profile->reviews()->save($review);
         if ($dto->rate) {
