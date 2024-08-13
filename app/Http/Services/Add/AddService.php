@@ -83,10 +83,8 @@ class AddService
         $user = Auth::user();
         $add->user()->associate($user);
         $add->propagateFromDTO($dto);
+        //$add = self::setAgreggateField($dto, $add);
 
-        if ($dto->category_id != self::CATEGORY_PHONE_ID) {
-            $add = self::setAgreggateField($dto, $add);
-        }
 
         $add->save();
         if (!empty($images)) {
