@@ -34,7 +34,7 @@ class AddService
         'city_id' => [
             'entity' => City::class,
             'method' => 'city',
-            'callable' => ['filtration']
+            'callable' => ['aggregation', 'filtration']
         ],
         'mark_id' => [
             'entity' => Mark::class,
@@ -83,7 +83,7 @@ class AddService
         $user = Auth::user();
         $add->user()->associate($user);
         $add->propagateFromDTO($dto);
-        //$add = self::setAgreggateField($dto, $add);
+        $add = self::setAgreggateField($dto, $add);
 
 
         $add->save();
