@@ -83,7 +83,8 @@ class AddService
         $user = Auth::user();
         $add->user()->associate($user);
         $add->propagateFromDTO($dto);
-        $add = self::setAgreggateField($dto, $add);
+
+        //$add = self::setAgreggateField($dto, $add);
 
 
         $add->save();
