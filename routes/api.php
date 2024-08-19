@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Add\AddController;
+use App\Http\Controllers\Add\UserAddController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Balance\BalanceController;
@@ -74,6 +75,10 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
     Route::get('/favorite', [FavoriteController::class, 'index']);
 
 
+    //user adds
+    Route::resource('/user/adds', UserAddController::class)->only([
+        'index',
+    ]);
 
     //adds
     Route::delete('/adds', [AddController::class, 'destroy']);
