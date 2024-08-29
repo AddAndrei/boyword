@@ -52,6 +52,7 @@ class Add extends BaseModel
     private const DEFAULT_STATUS = 'unconfirmed';
 
     protected $table = 'adds';
+    private int $categoryValue;
 
     protected $fillable = [
         'title',
@@ -139,12 +140,17 @@ class Add extends BaseModel
 
     public function byCategory(Builder $query, int $value): Builder
     {
+        $this->categoryValue = (int)$value;
         return $query->where('category_id', $value);
     }
 
     public function bySearch(Builder $query, string $value): Builder
     {
-        return $query->where('aggregate', 'like', "%$value%");
+        if ($this->categoryValue === 1) {
+            return $query->where('aggregate', 'like', "%$value%");
+        }
+        return $query->where('title', 'like', "%$value%")
+            ->orWhere('description', 'like', "%$value%");
     }
 
     public function byCity(Builder $query, string $value): Builder
