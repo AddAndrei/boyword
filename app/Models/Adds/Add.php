@@ -149,8 +149,10 @@ class Add extends BaseModel
         if ($this->categoryValue === 1) {
             return $query->where('aggregate', 'like', "%$value%");
         }
-        return $query->where('title', 'like', "%$value%")
-            ->orWhere('description', 'like', "%$value%");
+
+        return $query->where([['category_id', $this->categoryValue],['aggregate', 'like', "%$value%"]])
+            ->orWhere([['category_id', $this->categoryValue], ['title', 'like', "%$value%"]])
+            ->orWhere([['category_id', $this->categoryValue], ['description', 'like', "%$value%"]]);
     }
 
     public function byCity(Builder $query, string $value): Builder
