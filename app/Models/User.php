@@ -27,6 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $phone
  * @property HasMany $adds
  * @property HasOne $profile
+ * @property boolean $admin
  * @author Shcerbakov Andrei
  */
 class User extends Authenticatable
@@ -55,6 +56,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $attributes = [
+        'admin' => false,
     ];
 
     /**

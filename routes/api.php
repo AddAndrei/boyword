@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Add\AddController;
 use App\Http\Controllers\Add\UserAddController;
+use App\Http\Controllers\Admins\Add\AdminAddsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Balance\BalanceController;
@@ -15,7 +16,9 @@ use App\Http\Controllers\Reviews\ReviewsController;
 use App\Http\Controllers\System\SystemController;
 use App\Http\Controllers\Volume\VolumeController;
 use App\Http\Controllers\YandexDisk\YandexDiskController;
+use App\Http\Middleware\IsAdminValid;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admins\Auth\AuthController as AdminAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +40,18 @@ Route::post('/user/reset', [AuthController::class, 'resetPassword']);
 Route::post('/yandex', [YandexDiskController::class, 'index']);
 Route::get('/mm', [SystemController::class, 'showEntities']);
 
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
+Route::group(['middleware' => ['auth:sanctum', 'exception']], function () {
 
-Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
-
+    Route::middleware(IsAdminValid::class)->prefix('/admin')->group(function (){
+        Route::resource('/adds', AdminAddsController::class)
+            ->only([
+                'index',
+                'update',
+                'show',
+            ]);
+    });
     //chat
     Route::get('/messages', [ChatController::class, 'index']);
     Route::post('/messages/send', [ChatController::class, 'send']);
@@ -71,7 +82,7 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function(){
 
     //favorites
     Route::get('/favorite/add/{id}', [FavoriteController::class, 'add']);
-    Route::get('/favorite/remove/{id}',[FavoriteController::class, 'remove']);
+    Route::get('/favorite/remove/{id}', [FavoriteController::class, 'remove']);
     Route::get('/favorite', [FavoriteController::class, 'index']);
 
 

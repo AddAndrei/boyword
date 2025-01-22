@@ -53,14 +53,16 @@ class UserService
     }
 
     /**
-     * @param LoginDTO $dto
+     * @param DataTransferObject $dto
+     * @param bool $isAdmin
      * @return User|InvalidPasswordException
-     * @throws Exception
+     * @throws InvalidPasswordException
      */
-    public function login(DataTransferObject $dto): User|InvalidPasswordException
+    public function login(DataTransferObject $dto, bool $isAdmin = false): User|InvalidPasswordException
     {
         /** @var User $user */
-        $user = User::where('phone', $dto->phone)->first();
+        /** @var LoginDTO $dto */
+        $user = ($isAdmin) ? User::where([['phone', $dto->phone], ['admin', true]])->first() : User::where('phone', $dto->phone)->first();
         if ($user && Hash::check($dto->password, $user->password)) {
             $user->token = $user->createToken('appToken')->plainTextToken;
             $user->profile->token = $user->token;

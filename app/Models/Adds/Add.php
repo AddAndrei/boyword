@@ -135,7 +135,7 @@ class Add extends BaseModel
     public function updateFiltrateAggregation(): void
     {
         $this->filtrate = "{$this->city_id}{$this->mark_id}{$this->model_id}{$this->memory_id}{$this->color_id}";
-        $this->aggregate = "{$this->mark->title} {$this->model->title} {$this->memory->title} {$this->color->title}";
+        $this->aggregate = "{$this->mark?->title} {$this->model?->title} {$this->memory?->title} {$this->color?->title}";
     }
 
     public function byCategory(Builder $query, int $value): Builder
