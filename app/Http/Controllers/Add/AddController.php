@@ -41,8 +41,10 @@ class AddController extends Controller
     public function index(PaginateWithFiltersRequest $request): AnonymousResourceCollection
     {
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
-        $adds = $this->mediatr->all($dto, fn(Add $add) => Add::with(['city', 'images','user.profile','model','mark','memory'])
-            ->paginateWithFilters($dto)
+        $adds = $this->mediatr->all($dto,
+            fn(Add $add) => Add::with(['city', 'images','user.profile','model','mark','memory'])
+                ->where('status', 'confirmed')
+                ->paginateWithFilters($dto)
         );
         return AddResponse::collection($adds);
     }
@@ -95,7 +97,4 @@ class AddController extends Controller
         });
         return AddResponse::make($add);
     }
-
-
-
 }
