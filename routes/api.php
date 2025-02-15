@@ -20,6 +20,9 @@ use App\Http\Middleware\IsAdminValid;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admins\Auth\AuthController as AdminAuthController;
 
+header('Access-Control-Allow-Origin: http://80.90.191.17:7777');
+header('Access-Control-Allow-Headers: origin, x-requested-with, content-type');
+header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
 /*
 |--------------------------------------------------------------------------
 | Api Routes
