@@ -3,6 +3,8 @@
 use App\Http\Controllers\Add\AddController;
 use App\Http\Controllers\Add\UserAddController;
 use App\Http\Controllers\Admins\Add\AdminAddsController;
+use App\Http\Controllers\Analisator\AnalyzeController;
+use App\Http\Controllers\Analisator\TeamController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Balance\BalanceController;
@@ -30,6 +32,23 @@ use App\Http\Controllers\Admins\Auth\AuthController as AdminAuthController;
 | is assigned the "api" middleware group. Enjoy building your Api!
 |
 */
+
+//teams
+Route::get('/teams/getTeam', [TeamController::class, 'get']);
+Route::resource('/teams', TeamController::class)
+    ->only([
+        'store',
+        'index',
+        'update',
+        'show',
+    ]);
+
+//analyze
+Route::post('/analyze', [AnalyzeController::class, 'analyze']);
+Route::post('/heroes/update/win_rate', [AnalyzeController::class, 'updateHeroes']);
+Route::post('/teams/update/players', [AnalyzeController::class, 'updateTeams']);
+Route::post('/analyze/picks', [AnalyzeController::class, 'getPicks']);
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'login']);
@@ -151,7 +170,6 @@ Route::group(['middleware' => ['auth:sanctum', 'exception']], function () {
             'update',
             'show',
         ]);
-
 });
 
 
