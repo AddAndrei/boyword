@@ -21,7 +21,7 @@
         </style>
     </head>
     <body class="antialiased">
-
+        it's work!
     </body>
     <script>
         let socket = new WebSocket('ws://127.0.0.1:8000/?token=13');
