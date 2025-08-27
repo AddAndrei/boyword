@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
+    try {
+        DB::connection()->getPDO();
+        echo DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        echo 'None';
+    }
     return view('welcome');
 });
