@@ -22,6 +22,14 @@
     </head>
     <body class="antialiased">
         it's work!
+        <?php
+        try {
+            \DB::connection()->getPDO();
+            echo \DB::connection()->getDatabaseName();
+        } catch (\Exception $e) {
+            echo 'None';
+        }
+        ?>
     </body>
     <script>
         let socket = new WebSocket('ws://127.0.0.1:8000/?token=13');
