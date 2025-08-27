@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    try {
+        DB::connection()->getPDO();
+        echo DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        echo 'None';
+    }
     return view('welcome');
 });
