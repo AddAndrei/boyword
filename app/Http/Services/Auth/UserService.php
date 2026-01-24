@@ -41,7 +41,7 @@ class UserService
         $user->name = $dto->name;
         $user->password = bcrypt($dto->password);
         $user->save();
-        CreateFolderUserJob::dispatch(new YandexDisk(), $user->id);
+        //CreateFolderUserJob::dispatch(new YandexDisk(), $user->id);
         $profile = new Profile();
         $profile->name = $dto->name;
         $profile->last_name = $dto->last_name;

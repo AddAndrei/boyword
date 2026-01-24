@@ -169,6 +169,7 @@ class ChatSocket extends BaseSocket
                             $send_data['to_user_id'] = $data->to_user_id;
                             Chat::where('id', $chat_message_id)->update(['readable' => true]);
                             $send_data['message_status'] = 'Send';
+                            $send_data['type'] = 'message';
                             $client->send(json_encode($send_data));
                         }
                     }
@@ -179,6 +180,7 @@ class ChatSocket extends BaseSocket
                             $send_data['from_user_id'] = $data->from_user_id;
                             $send_data['to_user_id'] = $data->to_user_id;
                             $send_data['message_status'] = 'Not Send';
+                            $send_data['type'] = 'message';
                             $client->send(json_encode($send_data));
                         }
                     }
@@ -224,7 +226,6 @@ class ChatSocket extends BaseSocket
             Profile::where('id', $queryarray['token'])->update(['connection_id' => 0, 'online' => false ]);
             Connection::where(['profile_id', $queryarray['token']])->delete();
             $user_id = Profile::select('id', 'updated_at')->where('id', $queryarray['token'])->get();
-
             $data['id'] = $user_id[0]->id;
 
             $data['status'] = 'Offline';
@@ -252,7 +253,7 @@ class ChatSocket extends BaseSocket
 
     public function onError(ConnectionInterface $conn, \Exception $e): void
     {
-        echo "An error has occurred: {$e->getMessage()} \n";
+        echo "An error has occurred: {$e->getMessage()} \n Line: {$e->getCode()}";
 
         $conn->close();
     }

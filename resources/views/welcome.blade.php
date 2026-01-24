@@ -24,7 +24,7 @@
         it's work!
     </body>
     <script>
-        let socket = new WebSocket('ws://127.0.0.1:8000/?token=13');
+        let socket = new WebSocket('ws://boyword:8080/?token=8');
         socket.onopen = function (e) {
             console.log("open");
         }
@@ -36,9 +36,9 @@
             let data = {
                 "id":1,
                 "message":msg,
-                "from_user_id":13,
-                "to_user_id":5,
-                "request_chat_id":10,
+                "from_user_id":8,
+                "to_user_id":6,
+                "request_chat_id":1,
                 "type":"request_send_message"
             };
             socket.send(

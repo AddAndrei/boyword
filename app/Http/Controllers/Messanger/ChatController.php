@@ -58,6 +58,7 @@ class ChatController extends Controller
         $dto = PaginateWithFiltersDTO::createFromRequest($request);
         $messages = $this->chatMediatr->all(closure: function (Chat $chat) use ($id, $dto) {
             return $chat::with(['sender.image', 'receiver.image'])
+                ->orderBy('id', 'DESC')
                 ->where('chat_request_id', $id)
                 ->paginateWithFilters($dto);
 

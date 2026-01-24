@@ -18,7 +18,6 @@ use App\Http\Services\Add\ViewService;
 use App\Http\Services\EntityMediatr;
 use App\Http\Services\Service;
 use App\Models\Adds\Add;
-use App\Models\Adds\View;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,6 +43,7 @@ class AddController extends Controller
         $adds = $this->mediatr->all($dto,
             fn(Add $add) => Add::with(['city', 'images','user.profile','model','mark','memory'])
                 ->where('status', 'confirmed')
+                ->orderBy('id', 'DESC')
                 ->paginateWithFilters($dto)
         );
         return AddResponse::collection($adds);

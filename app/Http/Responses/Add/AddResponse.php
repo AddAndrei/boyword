@@ -38,6 +38,9 @@ class AddResponse extends Response
             'images' => $this->relationLoaded('images')
                 ? ImageResponse::collection($this->images)
                 : null,
+            'add_image' => ($this->relationLoaded('images') && isset($this->images->toArray()[0]['url']))
+                ? $this->images->toArray()[0]['url']
+                : null,
             'city' => $this->relationLoaded('city')
                 ? CityResponse::make($this->city)
                 : null,

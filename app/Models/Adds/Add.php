@@ -50,6 +50,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Add extends BaseModel
 {
     private const DEFAULT_STATUS = 'unconfirmed';
+    private const DEFAULT_CATEGORY = 1;
 
     protected $table = 'adds';
     private int $categoryValue;
@@ -74,6 +75,7 @@ class Add extends BaseModel
     {
         return $this->belongsTo(City::class, 'city_id');
     }
+
     public function views(): MorphMany
     {
         return $this->morphMany(View::class, 'viewable');
@@ -146,18 +148,18 @@ class Add extends BaseModel
 
     public function bySearch(Builder $query, string $value): Builder
     {
-        if ($this->categoryValue === 1) {
+        if ($this->categoryValue === self::DEFAULT_CATEGORY) {
             return $query->where('aggregate', 'like', "%$value%");
         }
 
-        return $query->where([['category_id', $this->categoryValue],['aggregate', 'like', "%$value%"]])
+        return $query->where([['category_id', $this->categoryValue], ['aggregate', 'like', "%$value%"]])
             ->orWhere([['category_id', $this->categoryValue], ['title', 'like', "%$value%"]])
             ->orWhere([['category_id', $this->categoryValue], ['description', 'like', "%$value%"]]);
     }
 
     public function byCity(Builder $query, string $value): Builder
     {
-        return $query->withWhereHas('city', function($q) use ($value) {
+        return $query->withWhereHas('city', function ($q) use ($value) {
             $q->where('title', $value);
         });
     }
@@ -167,6 +169,7 @@ class Add extends BaseModel
         $prices = explode(",", $value);
         return $query->whereBetween('price', [$prices[0], $prices[1]]);
     }
+
     public function byFrom(Builder $query, string $value): Builder
     {
         return $query->where('price', '>=', $value);
@@ -177,7 +180,7 @@ class Add extends BaseModel
         return $query->where('price', '<=', $value);
     }
 
-    public function byMark(Builder $builder , int $value): Builder
+    public function byMark(Builder $builder, int $value): Builder
     {
         return $builder->where('mark_id', $value);
     }
