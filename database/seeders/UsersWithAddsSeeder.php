@@ -9,9 +9,9 @@ use App\Models\City\City;
 use App\Models\Color\Color;
 use App\Models\Image\Image;
 use App\Models\Mark\Mark;
+use App\Models\Models\Model;
 use App\Models\User;
 use App\Models\Volume\VolumeMemory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class UsersWithAddsSeeder extends Seeder
