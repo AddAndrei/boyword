@@ -8,6 +8,8 @@ use App\Http\DTO\Adds\CreateAddDTO;
 use App\Http\DTO\Adds\UpdateAddDTO;
 use App\Http\Requests\Adds\CreateAddRequest;
 use App\Http\Services\Image\ImagesService;
+use App\Http\Services\Telegram\TelegramAddService;
+use App\Jobs\TelegramAddJob;
 use App\Jobs\UploadImageToDiskJob;
 use App\Models\Adds\Add;
 use App\Models\Categories\Category;
@@ -89,29 +91,14 @@ class AddService
 
         $add->save();
         if (!empty($images)) {
-            $webpName = [];
-            foreach ($images as $image) {
-                /** @var  UploadedFile $image */
-                $imageName = Storage::disk('time')->put('', $image);
-                $path = Storage::disk('time')->path('');
-                $path .= $imageName;
-                $newPath = str_replace("storage", "", storage_path("public/images/time/"));
-                $imageWebp = ImagesService::convertImage($path, $newPath);
-                Storage::disk('time')->delete($imageName);
-                $webpName = last(explode('/', $imageWebp));
-                $fullPath = env('APP_URL') . '/public/images/time/' . $webpName;
-                $entityImage = new Image();
-                $entityImage->url = $fullPath;
-                $entityImage->add()->associate($add);
-                $entityImage->save();
-            }
-
+            ImagesService::createImages($images, $add);
             //UploadImageToDiskJob::dispatch(new YandexDisk(), $images, $add->id, $user->id);
         } else {
             Log::error('not images', [$images]);
         }
 
         $add->load('images');
+        TelegramAddJob::dispatch($add);
         return $add;
     }
 
