@@ -98,7 +98,7 @@ class AddService
         }
 
         $add->load('images');
-        TelegramAddJob::dispatch($add);
+        //TelegramAddJob::dispatch($add);
         return $add;
     }
 
