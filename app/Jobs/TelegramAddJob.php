@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use JsonException;
 
 class TelegramAddJob implements ShouldQueue
 {
@@ -21,6 +22,9 @@ class TelegramAddJob implements ShouldQueue
 
     }
 
+    /**
+     * @throws JsonException
+     */
     public function handle(TelegramAddService $telegramAddService): void
     {
         $telegramAddService->notifiable($this->model);

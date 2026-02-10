@@ -3,6 +3,7 @@
 namespace App\Http\Services\Telegram;
 
 use JsonException;
+use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 abstract class BaseTelegram
@@ -18,7 +19,7 @@ abstract class BaseTelegram
         if (count($query['media']) === 1) {
             Telegram::sendPhoto([
                 'chat_id' => $this->chat_id,
-                'photo' => $query['media'][0]['media'],
+                'photo' => InputFile::create($query['media'][0]['media']),
                 'caption' => $query['text'],
                 'parse_mode' => 'html'
             ]);
