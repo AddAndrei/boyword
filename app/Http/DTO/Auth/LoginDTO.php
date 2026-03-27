@@ -6,7 +6,7 @@ use App\Http\DTO\DTO;
 
 class LoginDTO extends DTO
 {
-    public string $email;
+    public string $phone;
 
     public string $password;
 }

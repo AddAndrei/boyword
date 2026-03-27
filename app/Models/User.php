@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Http\DTO\DTO;
 use App\Http\Extensions\FiltersAndSortingPaginateTrait;
-use App\Models\Hero\Hero;
-use App\Models\User\UserBlock;
+use App\Models\Adds\Add;
+use App\Models\Auth\Profile;
+use App\Models\Auth\Rating;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,18 +19,24 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Class User
  * @package App\Models
+ * @property int $id
  * @property string|null $name
- * @property string $email
+ *
  * @property string $password
  * @property string $token
- *
- * @property HasMany $heroes
- * @property UserBlock $ban
+ * @property string $phone
+ * @property HasMany $adds
+ * @property HasOne $profile
+ * @property boolean $admin
  * @author Shcerbakov Andrei
  */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, FiltersAndSortingPaginateTrait;
+
+    protected $with = [
+        'profile',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -37,6 +45,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'phone',
     ];
 
     /**
@@ -49,6 +58,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $attributes = [
+        'admin' => false,
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -58,15 +71,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function heroes(): HasMany
-    {
-        return $this->hasMany(Hero::class, 'user_id', 'id');
-    }
 
-    public function ban(): HasOne
-    {
-        return $this->hasOne(UserBlock::class, 'user_id');
-    }
+
 
     /**
      * Заполнение аттрибутов
@@ -80,6 +86,16 @@ class User extends Authenticatable
             $this->$field = $value;
         }
         return $this;
+    }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+    public function adds(): HasMany
+    {
+        return $this->hasMany(Add::class, 'user_id');
     }
 
     public function byName(Builder $query, string $value): Builder
@@ -96,4 +112,7 @@ class User extends Authenticatable
     {
         return $query->where("email", "like", "%$value%");
     }
+
+
+
 }

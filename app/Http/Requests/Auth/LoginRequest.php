@@ -17,7 +17,7 @@ class LoginRequest extends FormRequest
     {
         return $this->only(
             [
-                'email',
+                'phone',
                 'password',
             ]
         );
@@ -26,7 +26,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'string|required',
+            'phone' => 'string|required',
             'password' => 'string|required',
         ];
     }

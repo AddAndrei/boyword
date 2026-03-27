@@ -4,9 +4,12 @@ namespace App\Http\Responses\Add;
 
 use App\Http\Responses\Auth\CreatorResponse;
 use App\Http\Responses\Auth\UserResponse;
+use App\Http\Responses\Category\CategoryResponse;
 use App\Http\Responses\City\CityResponse;
 use App\Http\Responses\Color\ColorResponse;
+use App\Http\Responses\Image\ImageResponse;
 use App\Http\Responses\Mark\MarkResponse;
+use App\Http\Responses\Model\ModelResponse;
 use App\Http\Responses\Response;
 use App\Http\Responses\Volume\VolumeResponse;
 use App\Models\Adds\Add;
@@ -30,14 +33,22 @@ class AddResponse extends Response
             'aggregate'=> $this->aggregate,
             'filtrate' => $this->filtrate,
             'price' => $this->price,
+            'created' => $this->created_at ? $this->created_at->toIso8601String() : null,
+            'updated' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
+            'images' => $this->relationLoaded('images')
+                ? ImageResponse::collection($this->images)
+                : null,
+            'add_image' => ($this->relationLoaded('images') && isset($this->images->toArray()[0]['url']))
+                ? $this->images->toArray()[0]['url']
+                : null,
             'city' => $this->relationLoaded('city')
                 ? CityResponse::make($this->city)
                 : null,
             'mark' => $this->relationLoaded('mark')
                 ? MarkResponse::make($this->mark)
                 : null,
-            'model' => $this->relationLoaded('mark')
-                ? MarkResponse::make($this->mark)
+            'model' => $this->relationLoaded('model')
+                ? ModelResponse::make($this->model)
                 : null,
             'memory' => $this->relationLoaded('memory')
                 ? VolumeResponse::make($this->memory)
@@ -47,6 +58,12 @@ class AddResponse extends Response
                 : null,
             'user' => $this->relationLoaded('user')
                 ? UserResponse::make($this->user)
+                : null,
+            'category' => $this->relationLoaded('category')
+                ? CategoryResponse::make($this->category)
+                : null,
+            'views' => $this->relationLoaded('views')
+                ? $this->views()->count()
                 : null,
         ];
     }

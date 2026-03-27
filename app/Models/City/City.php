@@ -2,8 +2,10 @@
 
 namespace App\Models\City;
 
+use App\Http\Extensions\FiltersAndSortingPaginateTrait;
 use App\Models\BaseModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property int $id
@@ -23,5 +25,9 @@ class City extends BaseModel
         'updated_at',
     ];
 
+    public function byTitle(Builder $builder, string $value): Builder
+    {
+        return $builder->where('title', 'like', "%$value%");
+    }
 
 }

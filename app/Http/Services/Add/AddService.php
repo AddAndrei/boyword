@@ -2,21 +2,41 @@
 
 namespace App\Http\Services\Add;
 
+use App\Api\YandexDisk;
+use App\Exceptions\AddsExceptions\PriceSubZeroException;
 use App\Http\DTO\Adds\CreateAddDTO;
+use App\Http\DTO\Adds\UpdateAddDTO;
+use App\Http\Requests\Adds\CreateAddRequest;
+use App\Http\Services\Image\ImagesService;
+use App\Http\Services\Telegram\TelegramAddService;
+use App\Jobs\TelegramAddJob;
+use App\Jobs\UploadImageToDiskJob;
 use App\Models\Adds\Add;
+use App\Models\Categories\Category;
 use App\Models\City\City;
 use App\Models\Color\Color;
+use App\Models\Image\Image;
 use App\Models\Mark\Mark;
 use App\Models\Models\Model;
 use App\Models\User;
 use App\Models\Volume\VolumeMemory;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AddService
 {
+    private const CATEGORY_PHONE_ID = 1;
+    private const ACCESS_ID = 2;
+    private const DETAIL_ID = 3;
+
     private static array $relations = [
         'city_id' => [
             'entity' => City::class,
             'method' => 'city',
+            'callable' => ['aggregation', 'filtration']
         ],
         'mark_id' => [
             'entity' => Mark::class,
@@ -37,14 +57,77 @@ class AddService
             'entity' => Color::class,
             'method' => 'color',
             'callable' => ['aggregation', 'filtration'],
+        ],
+        'category_id' => [
+            'entity' => Category::class,
+            'method' => 'category',
+            'callable' => ['filtration'],
         ]
     ];
+    private static array $defaultAggregate = [
+        self::ACCESS_ID => 'Аксессуар',
+        self::DETAIL_ID => 'Запчасть',
+    ];
 
-    public static function create(Add $add, CreateAddDTO $dto): Add
+    private static function setAgreggateField(CreateAddDTO $dto, Add $add): Add
     {
-        $add->updateRelations($dto, self::$relations);
-        $user = User::find(1);
-        $add->user()->associate($user);
+        $add->aggregate = self::$defaultAggregate[$dto->category_id];
         return $add;
     }
+
+    public static function create(CreateAddRequest $request, Add $add, CreateAddDTO $dto, $images): Add
+    {
+        if ((int)$dto->price < 0) {
+            throw new PriceSubZeroException();
+        }
+        $dto = self::createCity($dto, $request->get('city'));
+        $add->updateRelations($dto, self::$relations);
+        $user = Auth::user();
+        $add->user()->associate($user);
+        $add->propagateFromDTO($dto);
+
+        //$add = self::setAgreggateField($dto, $add);
+
+
+        $add->save();
+        if (!empty($images)) {
+            ImagesService::createImages($images, $add);
+            //UploadImageToDiskJob::dispatch(new YandexDisk(), $images, $add->id, $user->id);
+        } else {
+            Log::error('not images', [$images]);
+        }
+
+        $add->load('images');
+        //TelegramAddJob::dispatch($add);
+        return $add;
+    }
+
+
+    private static function createCity(CreateAddDTO $dto, string $cityName): CreateAddDTO
+    {
+        if ($cityName) {
+            $city = (City::where('title', $cityName)->exists()) ? City::where('title', $cityName)->first() : new City();
+            $city->title = $cityName;
+            $city->save();
+            $dto->city_id = $city->id;
+        }
+        return $dto;
+    }
+
+    public static function update(Add $add, UpdateAddDTO $dto): Add
+    {
+        Arr::forget(self::$relations, [
+            'city_id.callable',
+            'mark_id.callable',
+            'model_id.callable',
+            'memory_id.callable',
+            'color_id.callable',
+            'category_id.callable',
+        ]);
+        $add->updateRelations($dto, self::$relations);
+        $add->load(['city', 'mark', 'model', 'memory', 'color', 'user', 'category']);
+        $add->updateFiltrateAggregation();
+        return $add;
+    }
+
 }

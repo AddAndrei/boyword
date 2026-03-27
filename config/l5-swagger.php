@@ -58,7 +58,7 @@ return [
             'oauth2_callback' => 'api/oauth2-callback',
 
             /*
-             * Middleware allows to prevent unexpected access to API documentation
+             * Middleware allows to prevent unexpected access to Api documentation
             */
             'middleware' => [
                 'api' => [],
@@ -149,7 +149,7 @@ return [
         ],
 
         /*
-         * API security definitions. Will be generated into documentation file.
+         * Api security definitions. Will be generated into documentation file.
         */
         'securityDefinitions' => [
             'securitySchemes' => [
@@ -161,7 +161,7 @@ return [
                     'type' => 'apiKey', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'A short description for security scheme',
                     'name' => 'api_key', // The name of the header or query parameter to be used.
-                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                    'in' => 'header', // The location of the Api key. Valid values are "query" or "header".
                 ],
                 'oauth2_security_example' => [ // Unique name of security
                     'type' => 'oauth2', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
@@ -176,7 +176,7 @@ return [
                 ],
                 */
 
-                /* Open API 3.0 support
+                /* Open Api 3.0 support
                 'passport' => [ // Unique name of security
                     'type' => 'oauth2', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Laravel passport oauth2 security.',
@@ -195,7 +195,7 @@ return [
                     'type' => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Enter token in format (Bearer <token>)',
                     'name' => 'Authorization', // The name of the header or query parameter to be used.
-                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                    'in' => 'header', // The location of the Api key. Valid values are "query" or "header".
                 ],
                 */
             ],
@@ -240,7 +240,7 @@ return [
         'additional_config_url' => null,
 
         /*
-         * Apply a sort to the operation list of each API. It can be 'alpha' (sort by paths alphanumerically),
+         * Apply a sort to the operation list of each Api. It can be 'alpha' (sort by paths alphanumerically),
          * 'method' (sort by HTTP method).
          * Default is the order returned by the server unchanged.
         */

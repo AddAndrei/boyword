@@ -18,6 +18,9 @@ class CreateAddRequest extends FormRequest
                 'model_id',
                 'memory_id',
                 'color_id',
+                'category_id',
+                'images',
+                'city',
             ]
         );
     }
@@ -28,11 +31,13 @@ class CreateAddRequest extends FormRequest
             'title' => 'string|required',
             'description' => 'string|required',
             'price' => 'string|required',
-            'city_id' => 'integer|required|exists:cities,id',
-            'mark_id' => 'integer|required|exists:marks,id',
-            'model_id' => 'integer|required|exists:models,id',
-            'memory_id' => 'integer|required|exists:memories,id',
-            'color_id' => 'integer|required|exists:colors,id',
+            'city_id' => 'integer|nullable|exists:cities,id',
+            'mark_id' => 'integer|nullable|exists:marks,id',
+            'model_id' => 'integer|nullable|exists:models,id',
+            'memory_id' => 'integer|nullable|exists:memories,id',
+            'color_id' => 'integer|nullable|exists:colors,id',
+            'category_id' => 'integer|required|exists:categories,id',
+            'city' => 'string|nullable',
         ];
     }
 }

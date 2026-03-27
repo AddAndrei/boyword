@@ -18,10 +18,11 @@ class RegisterRequest extends FormRequest
     {
         return $this->only(
             [
-                'email',
+                'phone',
                 'password',
                 'name',
-                'password_confirmation',
+                'last_name',
+
             ]
         );
     }
@@ -30,9 +31,9 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'email' => 'string|required|unique:users,email',
-            'password' => 'string|required|confirmed',
-            'password_confirmation' => 'string|required',
+            'phone' => 'string|required',
+            'password' => 'string|required',
+            'last_name' => 'string|required',
         ];
     }
 }

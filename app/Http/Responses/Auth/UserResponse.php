@@ -18,9 +18,10 @@ class UserResponse extends Response
         /** @var User $this */
         return [
             'id' => $this->getKey(),
-            'name' => $this->name,
-            'email' => $this->email,
             'token' => $this->token,
+            'profile' => $this->relationLoaded('profile')
+                ? ProfileResponse::make($this->profile)
+                : null,
         ];
     }
 }
